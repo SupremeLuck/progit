@@ -3,6 +3,10 @@ progit.*.mobi
 progit.*.epub
 progit.*.html
 progit-*.epub
+!progit.ja.pdf
+!progit.ja.mobi
+!progit.ja.epub
+!progit.ja.html
 *.swp
 latex/*
 !latex/makepdf
