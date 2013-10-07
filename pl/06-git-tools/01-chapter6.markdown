@@ -65,14 +65,14 @@ W tej sytuacji, wybierasz `1c002dd....` Jeżeli chcesz wykonać na nim `git show
 
 Git może sam odnaleźć unikalne występowania wartości SHA-1. Jeżeli przekażesz parametr `--abbrev-commit` do komendy `git log`, jej wynik pokaże krótsze wartości SHA-1, przy zachowaniu ich unikalności; domyślnie stosuje długość 7 znaków, ale może ją zwiększyć, aby zachować unikalność sum kontrolnych:
 
-<!-- Git can figure out a short, unique abbreviation for your SHA-1 values. If you pass `--abbrev-commit` to the `git log` command, the output will use shorter values but keep them unique; it defaults to using seven characters but makes them longer if necessary to keep the SHA-1 unambiguous: -->
+<!-- Git can figure out a short, unique abbreviation for your SHA-1 values. If you pass `-\-abbrev-commit` to the `git log` command, the output will use shorter values but keep them unique; it defaults to using seven characters but makes them longer if necessary to keep the SHA-1 unambiguous: -->
 
 	$ git log --abbrev-commit --pretty=oneline
 	ca82a6d changed the version number
 	085bb3b removed unnecessary test code
 	a11bef0 first commit
 
-Generalnie, 8 do 10 znaków to wystarczająca ilość, aby mieć unikalne wartości w projekcie. Jeden z największych projektów korzystających z Gita, jądro systemu linuks, zaczyna używać 12 znaków z dostępnych 40. 
+Generalnie, 8 do 10 znaków to wystarczająca ilość, aby mieć unikalne wartości w projekcie. Jeden z największych projektów korzystających z Gita, jądro systemu linux, zaczyna używać 12 znaków z dostępnych 40. 
 
 <!-- Generally, eight to ten characters are more than enough to be unique within a project. One of the largest Git projects, the Linux kernel, is beginning to need 12 characters out of the possible 40 to stay unique. -->
 
@@ -308,7 +308,7 @@ You can also leave off one side of the syntax to have Git assume HEAD. For examp
 
 Składnie z dwiema kropkami jest użyteczna jako skrót; ale możesz chcieć wskazać więcej niż dwie gałęzie, jak na przykład zobaczenie które zmiany są w obojętnie której z gałęzi, ale nie są w gałęzi w której się obecnie znajdujesz. Git pozwala Ci na zrobienie tego poprzez użycie znaku `^`, lub opcji `--not` podanej przed referencją z której nie chcesz widzieć zmian. Dlatego też, te trzy komendy są równoznaczne:
 
-<!-- The double-dot syntax is useful as a shorthand; but perhaps you want to specify more than two branches to indicate your revision, such as seeing what commits are in any of several branches that aren’t in the branch you’re currently on. Git allows you to do this by using either the `^` character or `--not` before any reference from which you don’t want to see reachable commits. Thus these three commands are equivalent: -->
+<!-- The double-dot syntax is useful as a shorthand; but perhaps you want to specify more than two branches to indicate your revision, such as seeing what commits are in any of several branches that aren’t in the branch you’re currently on. Git allows you to do this by using either the `^` character or `-\-not` before any reference from which you don’t want to see reachable commits. Thus these three commands are equivalent: -->
 
 	$ git log refA..refB
 	$ git log ^refA refB
@@ -347,7 +347,7 @@ Ponownie, otrzymasz normalny wynik `log`, ale pokazujący tylko informacje o czt
 
 Często używaną opcją do komendy `log` jest `--left-right`, która pokazuje po której stronie każda zmiana występuje. Pozwala to na uzyskanie użyteczniejszych informacji:
 
-<!-- A common switch to use with the `log` command in this case is `--left-right`, which shows you which side of the range each commit is in. This helps make the data more useful: -->
+<!-- A common switch to use with the `log` command in this case is `-\-left-right`, which shows you which side of the range each commit is in. This helps make the data more useful: -->
 
 	$ git log --left-right master...experiment
 	< F
@@ -367,7 +367,7 @@ Git dostarcza kilku skryptów, które ułatwiają wykonywanie zadań z linii pol
 Jeżeli uruchomisz `git add` z opcją `-i` lub `-interactive`, Git wejdzie w tryb interaktywny, pokazując coś podobnego do:
 
 <!-- Git comes with a couple of scripts that make some command-line tasks easier. Here, you’ll look at a few interactive commands that can help you easily craft your commits to include only certain combinations and parts of files. These tools are very helpful if you modify a bunch of files and then decide that you want those changes to be in several focused commits rather than one big messy commit. This way, you can make sure your commits are logically separate changesets and can be easily reviewed by the developers working with you.
-If you run `git add` with the `-i` or `--interactive` option, Git goes into an interactive shell mode, displaying something like this: -->
+If you run `git add` with the `-i` or `-\-interactive` option, Git goes into an interactive shell mode, displaying something like this: -->
 
 	$ git add -i
 	           staged     unstaged path
@@ -466,7 +466,7 @@ Spójrz ponownie na status Gita, zobaczysz teraz, że usunąłeś z poczekalni p
 
 Aby zobaczyć porównanie tego co jest w przechowalni, możesz użyć komendy `6` lub `d` (ang. diff). Pokaże ona listę plików, które możesz wybrać aby zobaczyć wprowadzone zmiany. Jest to podobne do działania komendy `git diff --cached`:
 
-<!-- To see the diff of what you’ve staged, you can use the `6` or `d` (for diff) command. It shows you a list of your staged files, and you can select the ones for which you would like to see the staged diff. This is much like specifying `git diff --cached` on the command line: -->
+<!-- To see the diff of what you’ve staged, you can use the `6` or `d` (for diff) command. It shows you a list of your staged files, and you can select the ones for which you would like to see the staged diff. This is much like specifying `git diff -\-cached` on the command line: -->
 
 	*** Commands ***
 	  1: status     2: update      3: revert     4: add untracked
@@ -550,7 +550,7 @@ Wynik komendy status dla pliku simplegit.rb jest interesujący. Pokazuje on, że
 
 Wreszcie, nie musisz być w trybie interaktywnym aby dodać część pliku do przechowalni - możesz wywołać to samo menu, poprzez uruchomienie `git add -p` lub `git add --patch` z linii komend.
 
-<!-- Finally, you don’t need to be in interactive add mode to do the partial-file staging — you can start the same script by using `git add -p` or `git add --patch` on the command line. -->
+<!-- Finally, you don’t need to be in interactive add mode to do the partial-file staging — you can start the same script by using `git add -p` or `git add -\-patch` on the command line. -->
 
 ## Schowek ##
 
@@ -632,7 +632,7 @@ Możesz zauważyć, że Git zmodyfikował pliki które nie były zatwierdzone w 
 
 Zmiany na Twoich plikach zostały ponownie nałożone, ale plik który poprzednio był w przechowalni, teraz nie jest. Aby go dodać, musisz uruchomić `git stash apply` z parametrem `--index`, w celu ponownego dodania zmian do przechowalni. Jeżeli uruchomiłeś ją, otrzymasz w wyniku oryginalny stan:
 
-<!-- The changes to your files were reapplied, but the file you staged before wasn’t restaged. To do that, you must run the `git stash apply` command with a `--index` option to tell the command to try to reapply the staged changes. If you had run that instead, you’d have gotten back to your original position: -->
+<!-- The changes to your files were reapplied, but the file you staged before wasn’t restaged. To do that, you must run the `git stash apply` command with a `-\-index` option to tell the command to try to reapply the staged changes. If you had run that instead, you’d have gotten back to your original position: -->
 
 	$ git stash apply --index
 	# On branch master
@@ -720,7 +720,7 @@ Jest to bardzo pomocny skrót do odzyskiwania zapisanych w schowku zmian i konty
 
 <!-- ## Rewriting History ## -->
 
-Często, pracując z Gitem możesz chcieć zmienić historię commitów z jakiegoś powodu. Jedną z najlepszych rzeczy w Gitcie jest to, że pozwala on podejmować decyzję w ostatnim możliwym momencie. Możesz zdecydować które pliki idą w których commitach, dokładnie przed commitem przy użyciu przechowalni, możesz zdecydować że nie chciałeś nad czymś teraz pracować przy pomocy schowka, możesz również nadpisać commity które już wprowadziłeś, tak aby wyglądały inaczej. Możesz w ten sposób zmienić kolejność commitów, treść komentarza lub zawartość plików, złączyć lub rozdzielić commity, lub je w całości usunąć - wszystko zanim podzielisz się swoją praca z innymi.
+Często, pracując z Gitem możesz chcieć zmienić historię commitów z jakiegoś powodu. Jedną z najlepszych rzeczy w Gitcie jest to, że pozwala on podejmować decyzję w ostatnim możliwym momencie. Możesz zdecydować które pliki idą w których commitach, dokładnie przed commitem przy użyciu przechowalni, możesz zdecydować że nie chciałeś nad czymś teraz pracować przy pomocy schowka, możesz również nadpisać commity które już wprowadziłeś, tak aby wyglądały inaczej. Możesz w ten sposób zmienić kolejność commitów, treść komentarza lub zawartość plików, złączyć lub rozdzielić commity, lub je w całości usunąć - wszystko zanim podzielisz się swoją pracą z innymi.
 
 <!-- Many times, when working with Git, you may want to revise your commit history for some reason. One of the great things about Git is that it allows you to make decisions at the last possible moment. You can decide what files go into which commits right before you commit with the staging area, you can decide that you didn’t mean to be working on something yet with the stash command, and you can rewrite commits that already happened so they look like they happened in a different way. This can involve changing the order of the commits, changing messages or modifying files in a commit, squashing together or splitting apart commits, or removing commits entirely — all before you share your work with others. -->
 
@@ -748,7 +748,7 @@ Ta komenda uruchomi edytor tekstowy, który będzie zawierał Twój ostatni kome
 
 Jeżeli wykonałeś komendę "commit", a potem chcesz zmienić ostatnio zapisaną migawkę przez dodanie lub zmianę plików, być może dlatego że zapomniałeś dodać plik który stworzyłeś, cały proces działa bardzo podobnie. Dodajesz do przechowalni zmiany lub pliki poprzez wykonanie komendy `git add` na nich, lub `git rm` na jakimś pliku, a następnie uruchamiasz komendę `git commit --ammend`, która pobiera obecną zawartość przechowalni i robi z niej nową migawkę do commitu.
 
-<!-- If you’ve committed and then you want to change the snapshot you committed by adding or changing files, possibly because you forgot to add a newly created file when you originally committed, the process works basically the same way. You stage the changes you want by editing a file and running `git add` on it or `git rm` to a tracked file, and the subsequent `git commit --amend` takes your current staging area and makes it the snapshot for the new commit. -->
+<!-- If you’ve committed and then you want to change the snapshot you committed by adding or changing files, possibly because you forgot to add a newly created file when you originally committed, the process works basically the same way. You stage the changes you want by editing a file and running `git add` on it or `git rm` to a tracked file, and the subsequent `git commit -\-amend` takes your current staging area and makes it the snapshot for the new commit. -->
 
 Musisz być ostrożny z tymi zmianami, ponieważ wykonywanie komendy "ammend", zmienia sumę SHA-1 dla commitu. Działa to podobnie do bardzo małej zmiany bazy (and. rebase) - nie wykonuj komendy "amend" na ostatnim commicie, jeżeli zdążyłeś go już udostępnić innym.
 
@@ -925,7 +925,7 @@ Rozdzielanie commitu cofa jego nałożenie, a następnie część po części do
 
 Kiedy zapiszesz zmiany i wyjdziesz z edytora, Git cofnie się do rodzica pierwszego commita z listy, nałoży pierwszą zmianę (`f7f3f6d`), nałoży kolejną (`310154e`) i uruchomi konsolę. Tam możesz zrobić "reset" na kolejnym commicie za pomocą `git reset HEAD^`, co w efekcie cofnie zmiany i zostawi zmodyfikowane pliki poza przechowalnią. Teraz możesz wskazać zmiany które zostały zresetowane i utworzyć kilka osobnych commitów z nich. Po prostu dodaj do przechowalni i zapisz zmiany, do czasu aż będziesz miał kilka commitów, a następnie uruchom `git rebase --continue` gdy skończysz:
 
-<!-- When you save and exit the editor, Git rewinds to the parent of the first commit in your list, applies the first commit (`f7f3f6d`), applies the second (`310154e`), and drops you to the console. There, you can do a mixed reset of that commit with `git reset HEAD^`, which effectively undoes that commit and leaves the modified files unstaged. Now you can take the changes that have been reset, and create multiple commits out of them. Simply stage and commit files until you have several commits, and run `git rebase --continue` when you’re done: -->
+<!-- When you save and exit the editor, Git rewinds to the parent of the first commit in your list, applies the first commit (`f7f3f6d`), applies the second (`310154e`), and drops you to the console. There, you can do a mixed reset of that commit with `git reset HEAD^`, which effectively undoes that commit and leaves the modified files unstaged. Now you can take the changes that have been reset, and create multiple commits out of them. Simply stage and commit files until you have several commits, and run `git rebase -\-continue` when you’re done: -->
 
 	$ git reset HEAD^
 	$ git add README
@@ -952,7 +952,7 @@ Ponownie warto zaznaczyć, że ta operacja zmienia sumy SHA wszystkich commitów
 
 <!-- ### The Nuclear Option: filter-branch ### -->
 
-Istnieje jeszcze jedna opcja umożliwiająca nadpisanie historii, której możesz użyć, gdy chcesz nadpisać większą liczbę commitów w sposób który można oprogramować - na przykład, zmiana Twojego adresu email lub usunięcie pliku z każdego commita. Komenda ta to `filter-branch` i może ona zmodyfikować duże części Twojej historii, nie powinieneś jej prawdopodobnie używać, chyba że Twój projekt nie jest publiczny i inne osoby nie mają zmian bazujących na commitach które zamierzasz zmienić. Może oba być jednak przydatna. Nauczysz się kilku częstych przypadków użycia i zobaczysz co może ta komenda. 
+Istnieje jeszcze jedna opcja umożliwiająca nadpisanie historii, której możesz użyć, gdy chcesz nadpisać większą liczbę commitów w sposób który można oprogramować - przykładem tego może być zmiana Twojego adresu e-mail lub usunięcie pliku z każdego commita. Komenda ta to `filter-branch` i może ona zmodyfikować duże części Twojej historii, nie powinieneś jej prawdopodobnie używać, chyba że Twój projekt nie jest publiczny i inne osoby nie mają zmian bazujących na commitach które zamierzasz zmienić. Może oba być jednak przydatna. Nauczysz się kilku częstych przypadków użycia i zobaczysz co może ta komenda. 
 
 <!-- There is another history-rewriting option that you can use if you need to rewrite a larger number of commits in some scriptable way — for instance, changing your e-mail address globally or removing a file from every commit. The command is `filter-branch`, and it can rewrite huge swaths of your history, so you probably shouldn’t use it unless your project isn’t yet public and other people haven’t based work off the commits you’re about to rewrite. However, it can be very useful. You’ll learn a few of the common uses so you can get an idea of some of the things it’s capable of. -->
 
@@ -962,7 +962,7 @@ Istnieje jeszcze jedna opcja umożliwiająca nadpisanie historii, której możes
 
 To często występująca sytuacja. Ktoś niechcący zapisać duży plik za pomocą pochopnie wydanej komendy `git add .`, a Ty chcesz usunąć ten plik z każdego commita. Być może przez pomyłkę zapisałeś plik zawierający hasła, a chcesz upublicznić swój projekt. Komenda `filter-branch` jest tą, którą prawdopodobnie będziesz chciał użyć, aby obrobić całą historię zmian. Aby usunąć plik nazywający się paddwords.txt z całej Twojej historii w projekcie, możesz użyć opcji `--tree-filter` dodanej do `filter-branch`:
 
-<!-- This occurs fairly commonly. Someone accidentally commits a huge binary file with a thoughtless `git add .`, and you want to remove it everywhere. Perhaps you accidentally committed a file that contained a password, and you want to make your project open source. `filter-branch` is the tool you probably want to use to scrub your entire history. To remove a file named passwords.txt from your entire history, you can use the `--tree-filter` option to `filter-branch`: -->
+<!-- This occurs fairly commonly. Someone accidentally commits a huge binary file with a thoughtless `git add .`, and you want to remove it everywhere. Perhaps you accidentally committed a file that contained a password, and you want to make your project open source. `filter-branch` is the tool you probably want to use to scrub your entire history. To remove a file named passwords.txt from your entire history, you can use the `-\-tree-filter` option to `filter-branch`: -->
 
 	$ git filter-branch --tree-filter 'rm -f passwords.txt' HEAD
 	Rewrite 6b9b3cf04e7c5686a9cb838c3f36a8cb6a0fc2bd (21/21)
@@ -970,11 +970,11 @@ To często występująca sytuacja. Ktoś niechcący zapisać duży plik za pomoc
 
 Opcja `--tree-filter` umożliwia wykonanie jakiejś komendy po każdej zmianie i następnie ponownie zapisuje wynik. W tym przypadku, usuwasz plik passwords.txt z każdej migawki, bez względu na to czy on istnieje czy nie. Jeżeli chcesz usunąć wszystkie niechcący dodane kopie zapasowe plików stworzone przez edytor, możesz uruchomić coś podobnego do `git filter-branch --tree-filter "rm -f *~" HEAD`.
 
-<!-- The `--tree-filter` option runs the specified command after each checkout of the project and then recommits the results. In this case, you remove a file called passwords.txt from every snapshot, whether it exists or not. If you want to remove all accidentally committed editor backup files, you can run something like `git filter-branch --tree-filter "rm -f *~" HEAD`. -->
+<!-- The `-\-tree-filter` option runs the specified command after each checkout of the project and then recommits the results. In this case, you remove a file called passwords.txt from every snapshot, whether it exists or not. If you want to remove all accidentally committed editor backup files, you can run something like `git filter-branch -\-tree-filter "rm -f *~" HEAD`. -->
 
 Będziesz mógł obserwować jak Git nadpisuje strukturę projektu i zmiany, a następnie przesuwa wskaźnik gałęzi. Jest to generalnie całkiem dobrym pomysłem, aby wykonać to na testowej gałęzi, a następnie zresetować na twardo (ang. hard reset) gałąź master, po tym jak stwierdzisz że wynik jest tym czego oczekiwałeś. Aby uruchomić `filter-branch` an wszystkich gałęziach, dodajesz opcję `--all`.
 
-<!-- You’ll be able to watch Git rewriting trees and commits and then move the branch pointer at the end. It’s generally a good idea to do this in a testing branch and then hard-reset your master branch after you’ve determined the outcome is what you really want. To run `filter-branch` on all your branches, you can pass `--all` to the command. -->
+<!-- You’ll be able to watch Git rewriting trees and commits and then move the branch pointer at the end. It’s generally a good idea to do this in a testing branch and then hard-reset your master branch after you’ve determined the outcome is what you really want. To run `filter-branch` on all your branches, you can pass `-\-all` to the command. -->
 
 #### Wskazywanie podkatalogu jako katalogu głównego ####
 
@@ -996,9 +996,9 @@ Teraz Twoim nowym katalogiem głównym w projekcie, jest to, na co wskazywał po
 
 <!-- #### Changing E-Mail Addresses Globally #### -->
 
-Innym częstym przypadkiem jest ten, w którym zapomniałeś uruchomić `git config` aby ustawić imię i adres email przed rozpoczęciem prac, lub chcesz udostępnić projekt jako open-source i zmienić swój adres email na adres prywatny. W każdym przypadku, możesz zmienić adres email w wielu commitach również za pomocą `filter-branch`. Musisz uważać, aby zmienić adresy email które należą do Ciebie, użyjesz więc `--commit-filter`:
+Innym częstym przypadkiem jest ten, w którym zapomniałeś uruchomić `git config` aby ustawić imię i adres e-mail przed rozpoczęciem prac, lub chcesz udostępnić projekt jako open-source i zmienić swój adres e-mail na adres prywatny. W każdym przypadku, możesz zmienić adres e-mail w wielu commitach również za pomocą `filter-branch`. Musisz uważać, aby zmienić adresy e-mail które należą do Ciebie, użyjesz więc `--commit-filter`:
 
-<!-- Another common case is that you forgot to run `git config` to set your name and e-mail address before you started working, or perhaps you want to open-source a project at work and change all your work e-mail addresses to your personal address. In any case, you can change e-mail addresses in multiple commits in a batch with `filter-branch` as well. You need to be careful to change only the e-mail addresses that are yours, so you use `--commit-filter`: -->
+<!-- Another common case is that you forgot to run `git config` to set your name and e-mail address before you started working, or perhaps you want to open-source a project at work and change all your work e-mail addresses to your personal address. In any case, you can change e-mail addresses in multiple commits in a batch with `filter-branch` as well. You need to be careful to change only the e-mail addresses that are yours, so you use `-\-commit-filter`: -->
 
 	$ git filter-branch --commit-filter '
 	        if [ "$GIT_AUTHOR_EMAIL" = "schacon@localhost" ];
@@ -1088,7 +1088,7 @@ Załóżmy, że właśnie wypchnąłeś wersję swojego kodu na środowisko prod
 	Bisecting: 6 revisions left to test after this
 	[ecb6e1bc347ccecc5f9350d878ce677feb13d3b2] error handling on repo
 
-Git zobaczył, że 12 zmian było wprowadzonych między commitem który uznałęś za ostatnio poprawny (v1.0), a obecną błędnie działającą wersję i pobrał środkową wersję za Ciebie. W tym momencie, możesz uruchomić ponownie test aby sprawdzić, czy błąd występuje nadal. Jeżeli występuje, oznacza to, że błąd został wprowadzony gdzieś przed tym środkowym commitem; jeżeli nie, to problem został wprowadzony gdzieś po nim. Okazuje się, że błąd już nie występuje, więc pokazujesz to Gitowi poprzez komendę `git bisect good` i kontynuujesz dalej:
+Git zobaczył, że 12 zmian było wprowadzonych między commitem który uznałeś za ostatnio poprawny (v1.0), a obecną błędnie działającą wersję i pobrał środkową wersję za Ciebie. W tym momencie, możesz uruchomić ponownie test aby sprawdzić, czy błąd występuje nadal. Jeżeli występuje, oznacza to, że błąd został wprowadzony gdzieś przed tym środkowym commitem; jeżeli nie, to problem został wprowadzony gdzieś po nim. Okazuje się, że błąd już nie występuje, więc pokazujesz to Gitowi poprzez komendę `git bisect good` i kontynuujesz dalej:
 
 <!-- Git figured out that about 12 commits came between the commit you marked as the last good commit (v1.0) and the current bad version, and it checked out the middle one for you. At this point, you can run your test to see if the issue exists as of this commit. If it does, then it was introduced sometime before this middle commit; if it doesn’t, then the problem was introduced sometime after the middle commit. It turns out there is no issue here, and you tell Git that by typing `git bisect good` and continue your journey: -->
 
@@ -1125,7 +1125,7 @@ Kiedy skończysz, powinieneś uruchomić `git bisect reset`, aby zresetować sw�
 
 	$ git bisect reset
 
-Jest to potężne narzędzie, które pomoże Ci sprawdzić setki zmian, w poszukiwaniu wprowadzonego błędu w ciągu minut. W rzeczywistości, jeżeli masz skrypt który zwraca wartość 0 jeżeli projekt działa (good) poprawnie, oraz wartość inną niż 0 jeżeli projekt nie działa (bad), możesz w całości zautomatyzować komendę `git bisect`. Na początek, wskazujesz zakres na którym będzie działał, poprzez wskazanie znanych błędnych i działających commitów. Możesz to zrobić, poprzez wylistowanie ich za pomocą komendu `bisect start`, podając znany błędny commit jako pierwszy i znany działający jako drugi:
+Jest to potężne narzędzie, które pomoże Ci sprawdzić setki zmian, w poszukiwaniu wprowadzonego błędu w ciągu minut. W rzeczywistości, jeżeli masz skrypt który zwraca wartość 0 jeżeli projekt działa (good) poprawnie, oraz wartość inną niż 0 jeżeli projekt nie działa (bad), możesz w całości zautomatyzować komendę `git bisect`. Na początek, wskazujesz zakres na którym będzie działał, poprzez wskazanie znanych błędnych i działających commitów. Możesz to zrobić, poprzez wypisanie ich za pomocą komendy `bisect start`, podając znany błędny commit jako pierwszy i znany działający jako drugi:
 
 <!-- This is a powerful tool that can help you check hundreds of commits for an introduced bug in minutes. In fact, if you have a script that will exit 0 if the project is good or non-0 if the project is bad, you can fully automate `git bisect`. First, you again tell it the scope of the bisect by providing the known bad and good commits. You can do this by listing them with the `bisect start` command if you want, listing the known bad commit first and the known good commit second: -->
 
@@ -1152,7 +1152,7 @@ Git rozwiązuje te problemy przez użycie modułów zależnych. Pozwalają one n
 
 <!-- Git addresses this issue using submodules. Submodules allow you to keep a Git repository as a subdirectory of another Git repository. This lets you clone another repository into your project and keep your commits separate. -->
 
-### Rozpoczęcie prac z modułamy zależnymi ###
+### Rozpoczęcie prac z modułami zależnymi ###
 
 <!-- ### Starting with Submodules ### -->
 
@@ -1517,7 +1517,7 @@ Kiedy wykonasz commit, będzie wyglądało że masz wszystkie pliki Rack w podka
 
 Następnie, możesz włączyć te zmiany do swojej gałęzi master. Możesz użyć `git merge -s subtree` i ta zadziała poprawnie; ale Git również połączy historię zmian ze sobą, czego prawdopodobnie nie chcesz. Aby pobrać zmiany i samemu wypełnił treść komentarza, użyj opcji `--squash` oraz `--no-commit` do opcji `-s subtree`:
 
-<!-- Then, you can merge those changes back into your master branch. You can use `git merge -s subtree` and it will work fine; but Git will also merge the histories together, which you probably don’t want. To pull in the changes and prepopulate the commit message, use the `--squash` and `--no-commit` options as well as the `-s subtree` strategy option: -->
+<!-- Then, you can merge those changes back into your master branch. You can use `git merge -s subtree` and it will work fine; but Git will also merge the histories together, which you probably don’t want. To pull in the changes and prepopulate the commit message, use the `-\-squash` and `-\-no-commit` options as well as the `-s subtree` strategy option: -->
 
 	$ git checkout master
 	$ git merge --squash -s subtree --no-commit rack_branch
