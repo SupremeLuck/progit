@@ -1,41 +1,70 @@
-# Customizing Git #
+# Dostosowywanie Gita #
 
-So far, I’ve covered the basics of how Git works and how to use it, and I’ve introduced a number of tools that Git provides to help you use it easily and efficiently. In this chapter, I’ll go through some operations that you can use to make Git operate in a more customized fashion by introducing several important configuration settings and the hooks system. With these tools, it’s easy to get Git to work exactly the way you, your company, or your group needs it to.
+<!-- # Customizing Git # -->
 
-## Git Configuration ##
+Do tej pory opisałem podstawowe rzeczy związane z działaniem i użytkowaniem Gita, oraz pokazałem kilka narzędzi dostarczanych przez Git, ułatwiających i usprawniających pracę. W tym rozdziale, przejdziemy przez funkcjonalności których możesz użyć, aby Git działał w bardziej dostosowany do Twoich potrzeb sposób, pokazując kilka ważnych ustawień oraz system hooków. Przy pomocy tych narzędzi, łatwo można spowodować, aby Git działał w dokładnie taki sposób w jaki Ty, Twoja firma lub grupa potrzebujecie.
 
-As you briefly saw in the Chapter 1, you can specify Git configuration settings with the `git config` command. One of the first things you did was set up your name and e-mail address:
+<!-- So far, I’ve covered the basics of how Git works and how to use it, and I’ve introduced a number of tools that Git provides to help you use it easily and efficiently. In this chapter, I’ll go through some operations that you can use to make Git operate in a more customized fashion by introducing several important configuration settings and the hooks system. With these tools, it’s easy to get Git to work exactly the way you, your company, or your group needs it to. -->
+
+## Konfiguracja Gita ##
+
+<!-- ## Git Configuration ## -->
+
+Jak w skrócie zobaczyłeś w rozdziale 1, możesz zmieniać ustawienia konfiguracyjne za pomocą komendy `git config`. Jedną z pierwszych rzeczy którą zrobiłeś, było ustawienie imienia i adresu e-mail:
+
+<!-- As you briefly saw in the Chapter 1, you can specify Git configuration settings with the `git config` command. One of the first things you did was set up your name and e-mail address: -->
 
 	$ git config --global user.name "John Doe"
 	$ git config --global user.email johndoe@example.com
 
-Now you’ll learn a few of the more interesting options that you can set in this manner to customize your Git usage.
 
-You saw some simple Git configuration details in the first chapter, but I’ll go over them again quickly here. Git uses a series of configuration files to determine non-default behavior that you may want. The first place Git looks for these values is in an `/etc/gitconfig` file, which contains values for every user on the system and all of their repositories. If you pass the option `--system` to `git config`, it reads and writes from this file specifically.
+Teraz poznasz kilka bardziej interesujących opcji, które możesz ustawić w ten sposób, aby dostosować działanie Gita.
 
-The next place Git looks is the `~/.gitconfig` file, which is specific to each user. You can make Git read and write to this file by passing the `--global` option.
+<!-- Now you’ll learn a few of the more interesting options that you can set in this manner to customize your Git usage. -->
 
-Finally, Git looks for configuration values in the config file in the Git directory (`.git/config`) of whatever repository you’re currently using. These values are specific to that single repository. Each level overwrites values in the previous level, so values in `.git/config` trump those in `/etc/gitconfig`, for instance. You can also set these values by manually editing the file and inserting the correct syntax, but it’s generally easier to run the `git config` command.
+Widziałeś już kilka przykładowych ustawień konfiguracyjnych w pierwszym rozdziale, ale przejdziemy przez nie szybko jeszcze raz. Git używa kilku plików konfiguracyjnych, aby odczytać niestandardowe ustawienia które możesz mieć ustawione. Pierwszym miejscem w którym Git sprawdzi te ustawienia jest plik `/etc/gitconfig`, który zawiera ustawienia dla wszystkich użytkowników znajdujących się w systemie, oraz dla ich wszystkich repozytoriów. Jeżeli dodasz opcję `--system` do `git config`, Git będzie zapisywał i odczytywał ustawienia właśnie z tego pliku.
 
-### Basic Client Configuration ###
+<!-- You saw some simple Git configuration details in the first chapter, but I’ll go over them again quickly here. Git uses a series of configuration files to determine non-default behavior that you may want. The first place Git looks for these values is in an `/etc/gitconfig` file, which contains values for every user on the system and all of their repositories. If you pass the option `-\-system` to `git config`, it reads and writes from this file specifically. -->
 
-The configuration options recognized by Git fall into two categories: client side and server side. The majority of the options are client side—configuring your personal working preferences. Although tons of options are available, I’ll only cover the few that either are commonly used or can significantly affect your workflow. Many options are useful only in edge cases that I won’t go over here. If you want to see a list of all the options your version of Git recognizes, you can run
+Następnym miejscem w które Git zajrzy jest plik `~/.gitconfig`, wskazujący na ustawienia dla konkretnych użytkowników. Dodając opcję `--global`, zmusisz Gita to odczytywania i zapisywania ustawień z tego pliku.
+
+<!-- The next place Git looks is the `~/.gitconfig` file, which is specific to each user. You can make Git read and write to this file by passing the `-\-global` option. -->
+
+Na końcu, Git szuka ustawień w pliku konfiguracyjnym znajdującym się z katalogu Git (`.git/config`) w każdym repozytorium którego obecnie uzywasz. Ustawienia te są specyficzne dla tego konkretnego repozytorium. Każdy z poziomów nadpisuje ustawienia poprzedniegi poziomy, więc na przykład ustawienia w `.git/config` napisują te z `/etc/gitconfig`. Możesz również ustawiać wartości ręcznie poprzez edycję i wprowadzenie danych w poprawnym formacie, ale generalnie dużo ławiej jest użyć komendy `git config`.
+
+<!-- Finally, Git looks for configuration values in the config file in the Git directory (`.git/config`) of whatever repository you’re currently using. These values are specific to that single repository. Each level overwrites values in the previous level, so values in `.git/config` trump those in `/etc/gitconfig`, for instance. You can also set these values by manually editing the file and inserting the correct syntax, but it’s generally easier to run the `git config` command. -->
+
+### Podstawowa konfiguracja klienta ###
+
+<!-- ### Basic Client Configuration ### -->
+
+Opcje konfiguracyjne rozpoznawane przez Gita dzielą się na dwie kategorie: opcje klienta i serwera. Większość opcji dotyczy konfiguracji klienta - ustawień Twoich własnych preferencji. Chociaż jest dostępnych mnóstwo opcji, opiszę tylko kilka te z nich, którę są albo często używane lub mogą w znaczący sposób wpłynąć na Twoją pracę. Duża ilość opcji jest użyteczna tylko w specyficznych sytuacjach, których nie opiszę tutaj. Jeżeli chcesz zobaczyć listę wszystkich opcji konfiguracyjnych które Twoja wersja Gita rozpoznaje, uruchom
+
+<!-- The configuration options recognized by Git fall into two categories: client side and server side. The majority of the options are client side—configuring your personal working preferences. Although tons of options are available, I’ll only cover the few that either are commonly used or can significantly affect your workflow. Many options are useful only in edge cases that I won’t go over here. If you want to see a list of all the options your version of Git recognizes, you can run -->
 
 	$ git config --help
 
-The manual page for `git config` lists all the available options in quite a bit of detail.
+Podręcznik pomocy systemowej dla `git config` pokazuje wszystkie dostępne opcje i opisuje je w dość szczegółowy sposób.
+
+<!-- The manual page for `git config` lists all the available options in quite a bit of detail. -->
 
 #### core.editor ####
 
-By default, Git uses whatever you’ve set as your default text editor or else falls back to the Vi editor to create and edit your commit and tag messages. To change that default to something else, you can use the `core.editor` setting:
+Domyślnie, Git używa edytora ustawionego domyślnie, lub wraca do edytora Vi podczas tworzenia i edycji commitów i treści komentarzy do zmiany. Aby zmienić domyślny edytor na jakiś inny, używasz ustawienia `core.editor`:
+
+<!-- By default, Git uses whatever you’ve set as your default text editor or else falls back to the Vi editor to create and edit your commit and tag messages. To change that default to something else, you can use the `core.editor` setting: -->
 
 	$ git config --global core.editor emacs
 
-Now, no matter what is set as your default shell editor variable, Git will fire up Emacs to edit messages.
+Od teraz, nie ważne na jaki edytor wskazuje zmienna konfiguracyjna w powłoce, Git będzie uruchamiał Emacs do edycji wiadomości.
+
+<!-- Now, no matter what is set as your default shell editor variable, Git will fire up Emacs to edit messages. -->
 
 #### commit.template ####
 
-If you set this to the path of a file on your system, Git will use that file as the default message when you commit. For instance, suppose you create a template file at `$HOME/.gitmessage.txt` that looks like this:
+Jeżeli ustawisz ją na ścieżkę wskazującą na plik w Twoim systemie, Git będzie używał tego pliku jako szablonu komentarza do commita. Na przykład, załóżmy że stworzyłeś plik `$HOME/.gitmessage.txt` zawierający:
+
+<!-- If you set this to the path of a file on your system, Git will use that file as the default message when you commit. For instance, suppose you create a template file at `$HOME/.gitmessage.txt` that looks like this: -->
 
 	subject line
 
@@ -43,12 +72,16 @@ If you set this to the path of a file on your system, Git will use that file as 
 
 	[ticket: X]
 
-To tell Git to use it as the default message that appears in your editor when you run `git commit`, set the `commit.template` configuration value:
+Aby wskazać Gitowi, że chcesz używać go jako domyślnej treści komentarza pokazującej się w edytorze po uruchomieniu `git commit`, ustaw zmienną konfiguracyjną `commit.template` na:
+
+<!-- To tell Git to use it as the default message that appears in your editor when you run `git commit`, set the `commit.template` configuration value: -->
 
 	$ git config --global commit.template $HOME/.gitmessage.txt
 	$ git commit
 
-Then, your editor will open to something like this for your placeholder commit message when you commit:
+Potem, Twój edytor będzie ustawiał coś takiego jako domyślną treść komentarza po commicie:
+
+<!-- Then, your editor will open to something like this for your placeholder commit message when you commit: -->
 
 	subject line
 
@@ -67,33 +100,47 @@ Then, your editor will open to something like this for your placeholder commit m
 	~
 	".git/COMMIT_EDITMSG" 14L, 297C
 
-If you have a commit-message policy in place, then putting a template for that policy on your system and configuring Git to use it by default can help increase the chance of that policy being followed regularly.
+Jeżeli masz specjalną politykę tworzenia treści komentarzy, to ustawienie takiego szablonu i skonfigurowanie Gita aby go używał zwiekszy szanse na to, że będzie ona regularnie przestrzegana.
+
+<!-- If you have a commit-message policy in place, then putting a template for that policy on your system and configuring Git to use it by default can help increase the chance of that policy being followed regularly. -->
 
 #### core.pager ####
 
-The core.pager setting determines what pager is used when Git pages output such as `log` and `diff`. You can set it to `more` or to your favorite pager (by default, it’s `less`), or you can turn it off by setting it to a blank string:
+Wartość core.pager określa jaki program do stronnicowania jest używany przez Gita podczas pokazywania wyników komend `log` i `diff`. Możesz ustawić je na `more` lub inny ulubiony (domyślnie jest to `less`), lub możesz zupełnie je wyłączyć przez ustawienie pustej wartości:
+
+<!-- The core.pager setting determines what pager is used when Git pages output such as `log` and `diff`. You can set it to `more` or to your favorite pager (by default, it’s `less`), or you can turn it off by setting it to a blank string: -->
 
 	$ git config --global core.pager ''
 
-If you run that, Git will page the entire output of all commands, no matter how long it is.
+Jeżeli to uruchomisz, Git będzie pokazywał pełne wyniki wszystkich komend, bez względu na to jak długie są.
+
+<!-- If you run that, Git will page the entire output of all commands, no matter how long it is. -->
 
 #### user.signingkey ####
 
-If you’re making signed annotated tags (as discussed in Chapter 2), setting your GPG signing key as a configuration setting makes things easier. Set your key ID like so:
+Jeżeli tworzysz opisane etykiety (jak opisano w rozdziale 2), ustawienie Twojego klucza GPG jako zmiennej konfiguracyjnej ułatwi trochę sprawę. Ustaw swój identyfikator klucza w ten sposób:
+
+<!-- If you’re making signed annotated tags (as discussed in Chapter 2), setting your GPG signing key as a configuration setting makes things easier. Set your key ID like so: -->
 
 	$ git config --global user.signingkey <gpg-key-id>
 
-Now, you can sign tags without having to specify your key every time with the `git tag` command:
+Teraz, możesz podpisywać tagi bez konieczności wskazywania za każdym razem klucza podczas uruchamiania komendy `git tag`:
+
+<!-- Now, you can sign tags without having to specify your key every time with the `git tag` command: -->
 
 	$ git tag -s <tag-name>
 
 #### core.excludesfile ####
 
-You can put patterns in your project’s `.gitignore` file to have Git not see them as untracked files or try to stage them when you run `git add` on them, as discussed in Chapter 2. However, if you want another file outside of your project to hold those values or have extra values, you can tell Git where that file is with the `core.excludesfile` setting. Simply set it to the path of a file that has content similar to what a `.gitignore` file would have.
+Możesz umieścić wzorce plików w pliku `.gitignore` w swoim projekcie, tak aby Git pomijał je i nie próbował dodawać ich do przechowalni, gdy uruchomisz `git add`, zgodnie z tym ja opisano w rozdziale 2. Jednakże, jeżeli chcesz aby inny plik poza projektem przechowywał te informacje, lub miał jakieś dodatkowe, możesz wskazać Gitowi gdzie ten plik się znajduje za pomocą ustawienia `core.excludesfile`. Po prostu ustaw w nim ścieżkę do pliku, który zawiera wpisu analogiczne do tych które byłyby w pliku `.gitignore`.
+
+<!-- You can put patterns in your project’s `.gitignore` file to have Git not see them as untracked files or try to stage them when you run `git add` on them, as discussed in Chapter 2. However, if you want another file outside of your project to hold those values or have extra values, you can tell Git where that file is with the `core.excludesfile` setting. Simply set it to the path of a file that has content similar to what a `.gitignore` file would have. -->
 
 #### help.autocorrect ####
 
-This option is available only in Git 1.6.1 and later. If you mistype a command in Git, it shows you something like this:
+Opcja ta jest dostępna od wersji Gita 1.6.1 lub późniejszej. Jeżeli zrobisz błąd podczas wpisywania komendy Gita, pokaże Ci się coś podobnego do:
+
+<!-- This option is available only in Git 1.6.1 and later. If you mistype a command in Git, it shows you something like this: -->
 
 	$ git com
 	git: 'com' is not a git-command. See 'git --help'.
@@ -101,71 +148,110 @@ This option is available only in Git 1.6.1 and later. If you mistype a command i
 	Did you mean this?
 	     commit
 
-If you set `help.autocorrect` to 1, Git will automatically run the command if it has only one match under this scenario.
+Po ustawieniu `help.autocorrect` na 1, Git automatycznie uruchomi komendę, jeżeli będzie w stanie dopasować ją do dokładnie jednego wyniku.
+
+<!-- If you set `help.autocorrect` to 1, Git will automatically run the command if it has only one match under this scenario. -->
 
 ### Colors in Git ###
 
-Git can color its output to your terminal, which can help you visually parse the output quickly and easily. A number of options can help you set the coloring to your preference.
+Git może również pokazywać wyniki swojego działania w kolorze, co ułatwi Ci ich odczytanie w szybszy i łatwiejszy sposób. Liczne opcje pozwalają na dostosowanie kolorowania do Twoich preferencji.
+
+<!-- Git can color its output to your terminal, which can help you visually parse the output quickly and easily. A number of options can help you set the coloring to your preference. -->
 
 #### color.ui ####
 
-Git automatically colors most of its output if you ask it to. You can get very specific about what you want colored and how; but to turn on all the default terminal coloring, set `color.ui` to true:
+Git może automatycznie pokazywać w kolorze większość wyników swojego działania. Możesz bardzo dokładnie ustawić to co ma być pokazywane w kolorze, oraz w jaki sposób; ale aby włączyć wszystkie domyślne ustawienia dotyczące kolorowania, ustaw `color.ui` na true:
+
+<!-- Git automatically colors most of its output if you ask it to. You can get very specific about what you want colored and how; but to turn on all the default terminal coloring, set `color.ui` to true: -->
 
 	$ git config --global color.ui true
 
-When that value is set, Git colors its output if the output goes to a terminal. Other possible settings are false, which never colors the output, and always, which sets colors all the time, even if you’re redirecting Git commands to a file or piping them to another command.
+Gdy ta wartość jest ustawiona, Git będzie pokazywał w kolorze wyniki swojego działania na terminalu. Inne możliwe ustawienia to "false", które nigdy nie będzie pokazywało w kolorze wyników działania, oraz "always", które zawsze ustawi kolory, nawet w przypadku gdy będziesz chciał zapisać wyniki do pliku lub przekazać do innej komendy.
 
-You’ll rarely want `color.ui = always`. In most scenarios, if you want color codes in your redirected output, you can instead pass a `--color` flag to the Git command to force it to use color codes. The `color.ui = true` setting is almost always what you’ll want to use.
+<!-- When that value is set, Git colors its output if the output goes to a terminal. Other possible settings are false, which never colors the output, and always, which sets colors all the time, even if you’re redirecting Git commands to a file or piping them to another command. -->
+
+Bardzo rzadko będziesz potrzebował `color.ui = always`. Najczęściej, jeżeli będziesz chciał kolory w wynik działania Gita, użyjesz opcji `--color` do komendy Gita, aby wymisić na nim użycie kolorów. Ustawienie `color.ui = true` jest najczęściej tym, które będziesz chciał użyć.
+
+<!-- You’ll rarely want `color.ui = always`. In most scenarios, if you want color codes in your redirected output, you can instead pass a `-\-color` flag to the Git command to force it to use color codes. The `color.ui = true` setting is almost always what you’ll want to use. -->
 
 #### `color.*` ####
 
-If you want to be more specific about which commands are colored and how, Git provides verb-specific coloring settings. Each of these can be set to `true`, `false`, or `always`:
+Jeżeli chciałbyś móc bardziej dokładnie ustalać co i w jaki sposób jest pokazywane w kolorze, Git dostarcza odpowiednie ustawienia. Każde z nich może mieć wartość `true`, `false` lub `always`:
+
+<!-- If you want to be more specific about which commands are colored and how, Git provides verb-specific coloring settings. Each of these can be set to `true`, `false`, or `always`: -->
 
 	color.branch
 	color.diff
 	color.interactive
 	color.status
 
-In addition, each of these has subsettings you can use to set specific colors for parts of the output, if you want to override each color. For example, to set the meta information in your diff output to blue foreground, black background, and bold text, you can run
+Dodatkowo, każde z nich ma dodatkowe ustawienia, których możesz użyć, aby zmienić konkretne kolory dla części z wyświetlanego wyniku, jeżeli chciałbyś nadpisać jakiś z kolorów. Na przykład, aby pokazać w kolorze wynik komendy diff z niebieskim kolorem pierwszoplanowym, czarnym tłem i pogrubioną czcionką, uruchom:
+
+<!-- In addition, each of these has subsettings you can use to set specific colors for parts of the output, if you want to override each color. For example, to set the meta information in your diff output to blue foreground, black background, and bold text, you can run -->
 
 	$ git config --global color.diff.meta "blue black bold"
 
-You can set the color to any of the following values: normal, black, red, green, yellow, blue, magenta, cyan, or white. If you want an attribute like bold in the previous example, you can choose from bold, dim, ul, blink, and reverse.
+Możesz ustawić kolor na wartość jedną z: normal, black, red, green, yellow, blue, magenta, cyan lub white. Jeżeli chciałbyś użyć dodatkowego atrybutu takiego jak pogrubienie z poprzedniego przykładu, możesz wykorzystać bold, dim, ul, blink oraz reverse.
 
-See the `git config` manpage for all the subsettings you can configure, if you want to do that.
+<!-- You can set the color to any of the following values: normal, black, red, green, yellow, blue, magenta, cyan, or white. If you want an attribute like bold in the previous example, you can choose from bold, dim, ul, blink, and reverse. -->
 
-### External Merge and Diff Tools ###
+Zobacz podręcznik systemowy do komendy `git config`, aby poznać wszystkie ustawienia których możesz użyć podczas zmiany tych ustawień.
 
-Although Git has an internal implementation of diff, which is what you’ve been using, you can set up an external tool instead. You can also set up a graphical merge conflict-resolution tool instead of having to resolve conflicts manually. I’ll demonstrate setting up the Perforce Visual Merge Tool (P4Merge) to do your diffs and merge resolutions, because it’s a nice graphical tool and it’s free.
+<!-- See the `git config` manpage for all the subsettings you can configure, if you want to do that. -->
 
-If you want to try this out, P4Merge works on all major platforms, so you should be able to do so. I’ll use path names in the examples that work on Mac and Linux systems; for Windows, you’ll have to change `/usr/local/bin` to an executable path in your environment.
+### Zewnętrzne narzędzia do łączenia i pokazywania różnic ###
 
-You can download P4Merge here:
+<!-- ### External Merge and Diff Tools ### -->
+
+Chociaż Git posiada wbudowaną obsługę narzedzia diff, którego dotychczas używałeś, możesz ustawić inny zewnętrzny program zamiast niego. Możesz również ustawić graficzny program pozwalający na łączenie zmian i rozwiązywanie konfliktów, bez konieczności robienia tego ręcznie. Zaprezentuję na przykładzie Perforce Visual Merge Tool (P4Merge) w jaki sposób ustawić do obsługi łączenia i pokazywania różnic zewnętrzny program, ponieważ ma on prosty graficzny interfejs i jest darmowy.
+
+<!-- Although Git has an internal implementation of diff, which is what you’ve been using, you can set up an external tool instead. You can also set up a graphical merge conflict-resolution tool instead of having to resolve conflicts manually. I’ll demonstrate setting up the Perforce Visual Merge Tool (P4Merge) to do your diffs and merge resolutions, because it’s a nice graphical tool and it’s free. -->
+
+Jeżeli chcesz tego również spróbować, P4Merge działa na wszystkich głównych platformach, więc prawdopodobnie będziesz mogł to zrobić. Będę używał nazw ścieżek w przykładach które działają na systemach Mac i Linux; dla systemu Windows bedziesz musiał zmienić `/usr/local/bin` na odpowiednią ścieżkę w Twoim środowisku.
+
+<!-- If you want to try this out, P4Merge works on all major platforms, so you should be able to do so. I’ll use path names in the examples that work on Mac and Linux systems; for Windows, you’ll have to change `/usr/local/bin` to an executable path in your environment. -->
+
+Możesz pobrać P4Merge stąd:
+
+<!-- You can download P4Merge here: -->
 
 	http://www.perforce.com/perforce/downloads/component.html
 
-To begin, you’ll set up external wrapper scripts to run your commands. I’ll use the Mac path for the executable; in other systems, it will be where your `p4merge` binary is installed. Set up a merge wrapper script named `extMerge` that calls your binary with all the arguments provided:
+Na początek, ustawimy zewnętrzny skrypt do uruchamiania komend. Użyję ścieżki z systemu Mac wskazującej na program; w innych systemach, będzie ona musiała wskazywać na miejscej w którym program `p4merge` został zainstalowany. Stwórz skrypt o nazwie `extMerge`, który bedzie przyjmował wszystkie podane parametry i uruchamiał program:
+
+<!-- To begin, you’ll set up external wrapper scripts to run your commands. I’ll use the Mac path for the executable; in other systems, it will be where your `p4merge` binary is installed. Set up a merge wrapper script named `extMerge` that calls your binary with all the arguments provided: -->
 
 	$ cat /usr/local/bin/extMerge
 	#!/bin/sh
 	/Applications/p4merge.app/Contents/MacOS/p4merge $*
 
-The diff wrapper checks to make sure seven arguments are provided and passes two of them to your merge script. By default, Git passes the following arguments to the diff program:
 
-	path old-file old-hex old-mode new-file new-hex new-mode
+Skrypt do obsługi diff sprawdza czy zostało podanych 7 argumentów i przekazuje dwa z nicg do skryptu obsłiugującego merge. Domyślnie, Git przekazuje te argumenty do programu obsługującego pokazywanie różnic:
 
-Because you only want the `old-file` and `new-file` arguments, you use the wrapper script to pass the ones you need.
+<!-- The diff wrapper checks to make sure seven arguments are provided and passes two of them to your merge script. By default, Git passes the following arguments to the diff program: -->
+
+	ścieżka stary-plik stara-wartość-hex stary-tryb nowy-plik nowa-wartość-hex nowy-tryb
+
+<!-- 	path old-file old-hex old-mode new-file new-hex new-mode -->
+
+Ponieważ potrzebujesz tylko argumentów `stary-plik` i `nowy-plik`, w skrypcie przekazujesz tylko te które potrzebujesz.
+
+<!-- Because you only want the `old-file` and `new-file` arguments, you use the wrapper script to pass the ones you need. -->
 
 	$ cat /usr/local/bin/extDiff
 	#!/bin/sh
 	[ $# -eq 7 ] && /usr/local/bin/extMerge "$2" "$5"
 
-You also need to make sure these tools are executable:
+Musisz zwrócić uwagę, czy te narzędzia mają poprawne uprawnienia:
+
+<!-- You also need to make sure these tools are executable: -->
 
 	$ sudo chmod +x /usr/local/bin/extMerge
 	$ sudo chmod +x /usr/local/bin/extDiff
 
-Now you can set up your config file to use your custom merge resolution and diff tools. This takes a number of custom settings: `merge.tool` to tell Git what strategy to use, `mergetool.*.cmd` to specify how to run the command, `mergetool.trustExitCode` to tell Git if the exit code of that program indicates a successful merge resolution or not, and `diff.external` to tell Git what command to run for diffs. So, you can either run four config commands
+Teraz możesz zmienić ustawienia, 
+
+<!-- Now you can set up your config file to use your custom merge resolution and diff tools. This takes a number of custom settings: `merge.tool` to tell Git what strategy to use, `mergetool.*.cmd` to specify how to run the command, `mergetool.trustExitCode` to tell Git if the exit code of that program indicates a successful merge resolution or not, and `diff.external` to tell Git what command to run for diffs. So, you can either run four config commands -->
 
 	$ git config --global merge.tool extMerge
 	$ git config --global mergetool.extMerge.cmd \
@@ -307,15 +393,11 @@ Now, Git won’t try to convert or fix CRLF issues; nor will it try to compute o
 
 #### Diffing Binary Files ####
 
-In Git, you can use the attributes functionality to effectively diff binary files. You do this by telling Git how to convert your binary data to a text format that can be compared via the normal diff. But the question is how do you convert *binary* data to a text? The best solution is to find some tool that does conversion for your binary format to a text representation. Unfortunately, very few binary formats can be represented as human readable text (imagine trying to convert audio data to a text). If this is the case and you failed to get a text presentation of your file's contents, it's often relatively easy to get a human readable description of that content, or metadata. Metadata won't give you a full representation of your file's content, but in any case it's better than nothing.
-
-We'll make use of the both described approaches to get usable diffs for some widely used binary formats.
-
-Side note: There are different kinds of binary formats with a text content, which are hard to find usable converter for. In such a case you could try to extract a text from your file with the `strings` program. Some of these files may use an UTF-16 encoding or other "codepages" and `strings` won’t find anything useful in there. Your mileage may vary. However, `strings` is available on most Mac and Linux systems, so it may be a good first try to do this with many binary formats.
+In Git, you can use the attributes functionality to effectively diff binary files. You do this by telling Git how to convert your binary data to a text format that can be compared via the normal diff.
 
 ##### MS Word files #####
 
-First, you’ll use the described technique to solve one of the most annoying problems known to humanity: version-controlling Word documents. Everyone knows that Word is the most horrific editor around; but, oddly, everyone uses it. If you want to version-control Word documents, you can stick them in a Git repository and commit every once in a while; but what good does that do? If you run `git diff` normally, you only see something like this:
+Because this is a pretty cool and not widely known feature, I’ll go over a few examples. First, you’ll use this technique to solve one of the most annoying problems known to humanity: version-controlling Word documents. Everyone knows that Word is the most horrific editor around; but, oddly, everyone uses it. If you want to version-control Word documents, you can stick them in a Git repository and commit every once in a while; but what good does that do? If you run `git diff` normally, you only see something like this:
 
 	$ git diff
 	diff --git a/chapter1.doc b/chapter1.doc
@@ -326,16 +408,18 @@ You can’t directly compare two versions unless you check them out and scan the
 
 	*.doc diff=word
 
-This tells Git that any file that matches this pattern (.doc) should use the "word" filter when you try to view a diff that contains changes. What is the "word" filter? You have to set it up. Here you’ll configure Git to use the `catdoc` program, which was written specifically for extracting text from a binary MS Word documents (you can get it from `http://www.wagner.pp.ru/~vitus/software/catdoc/`), to convert Word documents into readable text files, which it will then diff properly:
+This tells Git that any file that matches this pattern (.doc) should use the "word" filter when you try to view a diff that contains changes. What is the "word" filter? You have to set it up. Here you’ll configure Git to use the `strings` program to convert Word documents into readable text files, which it will then diff properly:
 
-	$ git config diff.word.textconv catdoc
+	$ git config diff.word.textconv strings
 
 This command adds a section to your `.git/config` that looks like this:
 
 	[diff "word"]
-		textconv = catdoc
+		textconv = strings
 
-Now Git knows that if it tries to do a diff between two snapshots, and any of the files end in `.doc`, it should run those files through the "word" filter, which is defined as the `catdoc` program. This effectively makes nice text-based versions of your Word files before attempting to diff them.
+Side note: There are different kinds of `.doc` files. Some use an UTF-16 encoding or other "codepages" and `strings` won’t find anything useful in there. Your mileage may vary.
+
+Now Git knows that if it tries to do a diff between two snapshots, and any of the files end in `.doc`, it should run those files through the "word" filter, which is defined as the `strings` program. This effectively makes nice text-based versions of your Word files before attempting to diff them.
 
 Here’s an example. I put Chapter 1 of this book into Git, added some text to a paragraph, and saved the document. Then, I ran `git diff` to see what changed:
 
@@ -344,14 +428,15 @@ Here’s an example. I put Chapter 1 of this book into Git, added some text to a
 	index c1c8a0a..b93c9e4 100644
 	--- a/chapter1.doc
 	+++ b/chapter1.doc
-	@@ -128,7 +128,7 @@ and data size)
-	 Since its birth in 2005, Git has evolved and matured to be easy to use
-	 and yet retain these initial qualities. It’s incredibly fast, it’s
-	 very efficient with large projects, and it has an incredible branching
-	-system for non-linear development.
-	+system for non-linear development (See Chapter 3).
+	@@ -8,7 +8,8 @@ re going to cover Version Control Systems (VCS) and Git basics
+	 re going to cover how to get it and set it up for the first time if you don
+	 t already have it on your system.
+	 In Chapter Two we will go over basic Git usage - how to use Git for the 80%
+	-s going on, modify stuff and contribute changes. If the book spontaneously
+	+s going on, modify stuff and contribute changes. If the book spontaneously
+	+Let's see if this works.
 
-Git successfully and succinctly tells me that I added the string "(See Chapter 3)", which is correct. Works perfectly!
+Git successfully and succinctly tells me that I added the string "Let’s see if this works", which is correct. It’s not perfect — it adds a bunch of random stuff at the end — but it certainly works. If you can find or write a Word-to-plain-text converter that works well enough, that solution will likely be incredibly effective. However, `strings` is available on most Mac and Linux systems, so it may be a good first try to do this with many binary formats.
 
 ##### OpenDocument Text files #####
 
@@ -936,3 +1021,4 @@ The main drawback to this approach is that it can be very slow and is often unne
 ## Summary ##
 
 You’ve covered most of the major ways that you can customize your Git client and server to best fit your workflow and projects. You’ve learned about all sorts of configuration settings, file-based attributes, and event hooks, and you’ve built an example policy-enforcing server. You should now be able to make Git fit nearly any workflow you can dream up.
+
