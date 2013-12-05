@@ -30,7 +30,7 @@ Następnym miejscem w które Git zajrzy jest plik `~/.gitconfig`, wskazujący na
 
 <!-- The next place Git looks is the `~/.gitconfig` file, which is specific to each user. You can make Git read and write to this file by passing the `-\-global` option. -->
 
-Na końcu, Git szuka ustawień w pliku konfiguracyjnym znajdującym się z katalogu Git (`.git/config`) w każdym repozytorium którego obecnie uzywasz. Ustawienia te są specyficzne dla tego konkretnego repozytorium. Każdy z poziomów nadpisuje ustawienia poprzedniegi poziomy, więc na przykład ustawienia w `.git/config` napisują te z `/etc/gitconfig`. Możesz również ustawiać wartości ręcznie poprzez edycję i wprowadzenie danych w poprawnym formacie, ale generalnie dużo ławiej jest użyć komendy `git config`.
+Na końcu, Git szuka ustawień w pliku konfiguracyjnym znajdującym się z katalogu Git (`.git/config`) w każdym repozytorium którego obecnie używasz. Ustawienia te są specyficzne dla tego konkretnego repozytorium. Każdy z poziomów nadpisuje ustawienia poprzedniego poziomu, więc na przykład ustawienia w `.git/config` nadpisują te z `/etc/gitconfig`. Możesz również ustawiać wartości ręcznie poprzez edycję i wprowadzenie danych w poprawnym formacie, ale generalnie dużo łatwiej jest użyć komendy `git config`.
 
 <!-- Finally, Git looks for configuration values in the config file in the Git directory (`.git/config`) of whatever repository you’re currently using. These values are specific to that single repository. Each level overwrites values in the previous level, so values in `.git/config` trump those in `/etc/gitconfig`, for instance. You can also set these values by manually editing the file and inserting the correct syntax, but it’s generally easier to run the `git config` command. -->
 
@@ -38,7 +38,7 @@ Na końcu, Git szuka ustawień w pliku konfiguracyjnym znajdującym się z katal
 
 <!-- ### Basic Client Configuration ### -->
 
-Opcje konfiguracyjne rozpoznawane przez Gita dzielą się na dwie kategorie: opcje klienta i serwera. Większość opcji dotyczy konfiguracji klienta - ustawień Twoich własnych preferencji. Chociaż jest dostępnych mnóstwo opcji, opiszę tylko kilka te z nich, którę są albo często używane lub mogą w znaczący sposób wpłynąć na Twoją pracę. Duża ilość opcji jest użyteczna tylko w specyficznych sytuacjach, których nie opiszę tutaj. Jeżeli chcesz zobaczyć listę wszystkich opcji konfiguracyjnych które Twoja wersja Gita rozpoznaje, uruchom
+Opcje konfiguracyjne rozpoznawane przez Gita dzielą się na dwie kategorie: opcje klienta i serwera. Większość opcji dotyczy konfiguracji klienta - ustawień Twoich własnych preferencji. Chociaż jest dostępnych mnóstwo opcji, opiszę tylko kilka te z nich, które są albo często używane lub mogą w znaczący sposób wpłynąć na Twoją pracę. Duża ilość opcji jest użyteczna tylko w specyficznych sytuacjach, których nie opiszę tutaj. Jeżeli chcesz zobaczyć listę wszystkich opcji konfiguracyjnych które Twoja wersja Gita rozpoznaje, uruchom
 
 <!-- The configuration options recognized by Git fall into two categories: client side and server side. The majority of the options are client side—configuring your personal working preferences. Although tons of options are available, I’ll only cover the few that either are commonly used or can significantly affect your workflow. Many options are useful only in edge cases that I won’t go over here. If you want to see a list of all the options your version of Git recognizes, you can run -->
 
@@ -100,13 +100,13 @@ Potem, Twój edytor będzie ustawiał coś takiego jako domyślną treść komen
 	~
 	".git/COMMIT_EDITMSG" 14L, 297C
 
-Jeżeli masz specjalną politykę tworzenia treści komentarzy, to ustawienie takiego szablonu i skonfigurowanie Gita aby go używał zwiekszy szanse na to, że będzie ona regularnie przestrzegana.
+Jeżeli masz specjalną politykę tworzenia treści komentarzy, to ustawienie takiego szablonu i skonfigurowanie Gita aby go używał zwiększy szanse na to, że będzie ona regularnie przestrzegana.
 
 <!-- If you have a commit-message policy in place, then putting a template for that policy on your system and configuring Git to use it by default can help increase the chance of that policy being followed regularly. -->
 
 #### core.pager ####
 
-Wartość core.pager określa jaki program do stronnicowania jest używany przez Gita podczas pokazywania wyników komend `log` i `diff`. Możesz ustawić je na `more` lub inny ulubiony (domyślnie jest to `less`), lub możesz zupełnie je wyłączyć przez ustawienie pustej wartości:
+Wartość core.pager określa jaki program do stronicowania jest używany przez Gita podczas pokazywania wyników komend `log` i `diff`. Możesz ustawić je na `more` lub inny ulubiony (domyślnie jest to `less`), lub możesz zupełnie je wyłączyć przez ustawienie pustej wartości:
 
 <!-- The core.pager setting determines what pager is used when Git pages output such as `log` and `diff`. You can set it to `more` or to your favorite pager (by default, it’s `less`), or you can turn it off by setting it to a blank string: -->
 
@@ -132,13 +132,13 @@ Teraz, możesz podpisywać tagi bez konieczności wskazywania za każdym razem k
 
 #### core.excludesfile ####
 
-Możesz umieścić wzorce plików w pliku `.gitignore` w swoim projekcie, tak aby Git pomijał je i nie próbował dodawać ich do przechowalni, gdy uruchomisz `git add`, zgodnie z tym ja opisano w rozdziale 2. Jednakże, jeżeli chcesz aby inny plik poza projektem przechowywał te informacje, lub miał jakieś dodatkowe, możesz wskazać Gitowi gdzie ten plik się znajduje za pomocą ustawienia `core.excludesfile`. Po prostu ustaw w nim ścieżkę do pliku, który zawiera wpisu analogiczne do tych które byłyby w pliku `.gitignore`.
+Możesz umieścić wzorce w pliku `.gitignore` w swoim projekcie, aby Git nie śledził ich i nie próbował dodawać do przechowalni po wykonaniu komendy `git add`, jak wspomniałem już w rozdziale 2. Możesz jednak przechowywać te informacje w innym pliku, znajdującym się poza drzewem projektu, możesz wskazać Gitowi loikalizację tego pliku za pomocą ustawienia `core.excludesfile`. Po prostu ustaw ją na ścieżkę wskazującą na plik, który ma zawartość podobną do tej, którą ma `.gitignore`.
 
 <!-- You can put patterns in your project’s `.gitignore` file to have Git not see them as untracked files or try to stage them when you run `git add` on them, as discussed in Chapter 2. However, if you want another file outside of your project to hold those values or have extra values, you can tell Git where that file is with the `core.excludesfile` setting. Simply set it to the path of a file that has content similar to what a `.gitignore` file would have. -->
 
 #### help.autocorrect ####
 
-Opcja ta jest dostępna od wersji Gita 1.6.1 lub późniejszej. Jeżeli zrobisz błąd podczas wpisywania komendy Gita, pokaże Ci się coś podobnego do:
+Ta opcja jest dostępna w wersjach Gita 1.6.1 i późniejszych. Jeżeli błędnie wpiszesz komendę w Git, zostanie Ci pokazany wynik podobny do:
 
 <!-- This option is available only in Git 1.6.1 and later. If you mistype a command in Git, it shows you something like this: -->
 
@@ -148,11 +148,14 @@ Opcja ta jest dostępna od wersji Gita 1.6.1 lub późniejszej. Jeżeli zrobisz 
 	Did you mean this?
 	     commit
 
-Po ustawieniu `help.autocorrect` na 1, Git automatycznie uruchomi komendę, jeżeli będzie w stanie dopasować ją do dokładnie jednego wyniku.
+Jeżeli ustawisz `help.autocorrect` na 1, Git automatycznie uruchomi komendę, jeżeli będzie mógł ją dopasować tylko do jednego wyniku.
 
 <!-- If you set `help.autocorrect` to 1, Git will automatically run the command if it has only one match under this scenario. -->
 
-### Colors in Git ###
+
+### Kolory w Git ###
+
+<!-- ### Colors in Git ### -->
 
 Git może również pokazywać wyniki swojego działania w kolorze, co ułatwi Ci ich odczytanie w szybszy i łatwiejszy sposób. Liczne opcje pozwalają na dostosowanie kolorowania do Twoich preferencji.
 
@@ -170,7 +173,7 @@ Gdy ta wartość jest ustawiona, Git będzie pokazywał w kolorze wyniki swojego
 
 <!-- When that value is set, Git colors its output if the output goes to a terminal. Other possible settings are false, which never colors the output, and always, which sets colors all the time, even if you’re redirecting Git commands to a file or piping them to another command. -->
 
-Bardzo rzadko będziesz potrzebował `color.ui = always`. Najczęściej, jeżeli będziesz chciał kolory w wynik działania Gita, użyjesz opcji `--color` do komendy Gita, aby wymisić na nim użycie kolorów. Ustawienie `color.ui = true` jest najczęściej tym, które będziesz chciał użyć.
+Bardzo rzadko będziesz potrzebował `color.ui = always`. Najczęściej, jeżeli będziesz chciał kolory w wynik działania Gita, użyjesz opcji `--color` do komendy Gita, aby wymusić na nim użycie kolorów. Ustawienie `color.ui = true` jest najczęściej tym, które będziesz chciał użyć.
 
 <!-- You’ll rarely want `color.ui = always`. In most scenarios, if you want color codes in your redirected output, you can instead pass a `-\-color` flag to the Git command to force it to use color codes. The `color.ui = true` setting is almost always what you’ll want to use. -->
 
@@ -203,11 +206,11 @@ Zobacz podręcznik systemowy do komendy `git config`, aby poznać wszystkie usta
 
 <!-- ### External Merge and Diff Tools ### -->
 
-Chociaż Git posiada wbudowaną obsługę narzedzia diff, którego dotychczas używałeś, możesz ustawić inny zewnętrzny program zamiast niego. Możesz również ustawić graficzny program pozwalający na łączenie zmian i rozwiązywanie konfliktów, bez konieczności robienia tego ręcznie. Zaprezentuję na przykładzie Perforce Visual Merge Tool (P4Merge) w jaki sposób ustawić do obsługi łączenia i pokazywania różnic zewnętrzny program, ponieważ ma on prosty graficzny interfejs i jest darmowy.
+Chociaż Git posiada wbudowaną obsługę narzędzia diff, którego dotychczas używałeś, możesz ustawić inny zewnętrzny program zamiast niego. Możesz również ustawić graficzny program pozwalający na łączenie zmian i rozwiązywanie konfliktów, bez konieczności robienia tego ręcznie. Zaprezentuję na przykładzie Perforce Visual Merge Tool (P4Merge) w jaki sposób ustawić do obsługi łączenia i pokazywania różnic zewnętrzny program, ponieważ ma on prosty graficzny interfejs i jest darmowy.
 
 <!-- Although Git has an internal implementation of diff, which is what you’ve been using, you can set up an external tool instead. You can also set up a graphical merge conflict-resolution tool instead of having to resolve conflicts manually. I’ll demonstrate setting up the Perforce Visual Merge Tool (P4Merge) to do your diffs and merge resolutions, because it’s a nice graphical tool and it’s free. -->
 
-Jeżeli chcesz tego również spróbować, P4Merge działa na wszystkich głównych platformach, więc prawdopodobnie będziesz mogł to zrobić. Będę używał nazw ścieżek w przykładach które działają na systemach Mac i Linux; dla systemu Windows bedziesz musiał zmienić `/usr/local/bin` na odpowiednią ścieżkę w Twoim środowisku.
+Jeżeli chcesz tego również spróbować, P4Merge działa na wszystkich głównych platformach, więc prawdopodobnie będziesz mógł to zrobić. Będę używał nazw ścieżek w przykładach które działają na systemach Mac i Linux; dla systemu Windows będziesz musiał zmienić `/usr/local/bin` na odpowiednią ścieżkę w Twoim środowisku.
 
 <!-- If you want to try this out, P4Merge works on all major platforms, so you should be able to do so. I’ll use path names in the examples that work on Mac and Linux systems; for Windows, you’ll have to change `/usr/local/bin` to an executable path in your environment. -->
 
@@ -217,7 +220,7 @@ Możesz pobrać P4Merge stąd:
 
 	http://www.perforce.com/perforce/downloads/component.html
 
-Na początek, ustawimy zewnętrzny skrypt do uruchamiania komend. Użyję ścieżki z systemu Mac wskazującej na program; w innych systemach, będzie ona musiała wskazywać na miejscej w którym program `p4merge` został zainstalowany. Stwórz skrypt o nazwie `extMerge`, który bedzie przyjmował wszystkie podane parametry i uruchamiał program:
+Na początek, ustawimy zewnętrzny skrypt do uruchamiania komend. Użyję ścieżki z systemu Mac wskazującej na program; w innych systemach, będzie ona musiała wskazywać na miejsce w którym program `p4merge` został zainstalowany. Stwórz skrypt o nazwie `extMerge`, który będzie przyjmował wszystkie podane parametry i uruchamiał program:
 
 <!-- To begin, you’ll set up external wrapper scripts to run your commands. I’ll use the Mac path for the executable; in other systems, it will be where your `p4merge` binary is installed. Set up a merge wrapper script named `extMerge` that calls your binary with all the arguments provided: -->
 
@@ -226,7 +229,7 @@ Na początek, ustawimy zewnętrzny skrypt do uruchamiania komend. Użyję ście�
 	/Applications/p4merge.app/Contents/MacOS/p4merge $*
 
 
-Skrypt do obsługi diff sprawdza czy zostało podanych 7 argumentów i przekazuje dwa z nicg do skryptu obsłiugującego merge. Domyślnie, Git przekazuje te argumenty do programu obsługującego pokazywanie różnic:
+Skrypt do obsługi diff sprawdza czy zostało podanych 7 argumentów i przekazuje dwa z nich do skryptu obsługującego merge. Domyślnie, Git przekazuje te argumenty do programu obsługującego pokazywanie różnic:
 
 <!-- The diff wrapper checks to make sure seven arguments are provided and passes two of them to your merge script. By default, Git passes the following arguments to the diff program: -->
 
@@ -234,7 +237,7 @@ Skrypt do obsługi diff sprawdza czy zostało podanych 7 argumentów i przekazuj
 
 <!-- 	path old-file old-hex old-mode new-file new-hex new-mode -->
 
-Ponieważ potrzebujesz tylko argumentów `stary-plik` i `nowy-plik`, w skrypcie przekazujesz tylko te które potrzebujesz.
+Ponieważ chcesz tylko argumentów `stary-plik` i `nowy-plik`, w skrypcie przekazujesz tylko te które potrzebujesz.
 
 <!-- Because you only want the `old-file` and `new-file` arguments, you use the wrapper script to pass the ones you need. -->
 
@@ -242,14 +245,14 @@ Ponieważ potrzebujesz tylko argumentów `stary-plik` i `nowy-plik`, w skrypcie 
 	#!/bin/sh
 	[ $# -eq 7 ] && /usr/local/bin/extMerge "$2" "$5"
 
-Musisz zwrócić uwagę, czy te narzędzia mają poprawne uprawnienia:
+Musisz zwrócić uwagę, czy te skrypty mają poprawne uprawnienia:
 
 <!-- You also need to make sure these tools are executable: -->
 
 	$ sudo chmod +x /usr/local/bin/extMerge
 	$ sudo chmod +x /usr/local/bin/extDiff
 
-Teraz możesz zmienić ustawienia, 
+Teraz możesz ustawić swój plik konfiguracyjny, aby korzystał z innych niż domyślne programów do łączenia i rozwiązywania konfliktów. Dostępnych jest kilka opcji konfiguracyjnych: `merge.tool` wskazująca jaką strategię TODO
 
 <!-- Now you can set up your config file to use your custom merge resolution and diff tools. This takes a number of custom settings: `merge.tool` to tell Git what strategy to use, `mergetool.*.cmd` to specify how to run the command, `mergetool.trustExitCode` to tell Git if the exit code of that program indicates a successful merge resolution or not, and `diff.external` to tell Git what command to run for diffs. So, you can either run four config commands -->
 
@@ -259,7 +262,9 @@ Teraz możesz zmienić ustawienia,
 	$ git config --global mergetool.trustExitCode false
 	$ git config --global diff.external extDiff
 
-or you can edit your `~/.gitconfig` file to add these lines:
+lub możesz wyedytować swój plik `~/.gitconfig` i dodać następujące linie:
+
+<!-- or you can edit your `~/.gitconfig` file to add these lines: -->
 
 	[merge]
 	  tool = extMerge
@@ -269,34 +274,54 @@ or you can edit your `~/.gitconfig` file to add these lines:
 	[diff]
 	  external = extDiff
 
-After all this is set, if you run diff commands such as this:
+Po wprowadzeniu tych ustawień, jeżeli uruchomisz komendę diff w ten sposób:
+
+<!-- After all this is set, if you run diff commands such as this: -->
 
 	$ git diff 32d1776b1^ 32d1776b1
 
-Instead of getting the diff output on the command line, Git fires up P4Merge, which looks something like Figure 7-1.
+Zamiast wyniku pokazanego w wierszu poleceń, Git uruchomi P4Merge, pokazując wynik podobny do tego zamieszczonego na Rysunku 7-1.
+
+<!-- Instead of getting the diff output on the command line, Git fires up P4Merge, which looks something like Figure 7-1. -->
 
 Insert 18333fig0701.png
 Figure 7-1. P4Merge.
 
-If you try to merge two branches and subsequently have merge conflicts, you can run the command `git mergetool`; it starts P4Merge to let you resolve the conflicts through that GUI tool.
+Jeżeli spróbujesz wykonać łączenie (ang. merge) na dwóch gałęziach, które zakończy się konfliktem, możesz uruchomić komendę `git mergetool`; zostanie uruchomiony skrypt P4Merge, pozwalający na rozwiązanie konfliktów poprzez interfejs graficzny GUI.
 
-The nice thing about this wrapper setup is that you can change your diff and merge tools easily. For example, to change your `extDiff` and `extMerge` tools to run the KDiff3 tool instead, all you have to do is edit your `extMerge` file:
+<!-- If you try to merge two branches and subsequently have merge conflicts, you can run the command `git mergetool`; it starts P4Merge to let you resolve the conflicts through that GUI tool. -->
+
+Zaletą tej konfiguracji jest to, że możesz zmienić łatwo zmienić narzędzia służące do porównywania (diff), oraz łączenia (merge). Na przykład, aby skrypty `extDiff` i `extMerge` uruchamiały KDiff3, musisz tylko zmienić plik `extMerge`:
+
+<!-- The nice thing about this wrapper setup is that you can change your diff and merge tools easily. For example, to change your `extDiff` and `extMerge` tools to run the KDiff3 tool instead, all you have to do is edit your `extMerge` file: -->
 
 	$ cat /usr/local/bin/extMerge
 	#!/bin/sh
 	/Applications/kdiff3.app/Contents/MacOS/kdiff3 $*
 
-Now, Git will use the KDiff3 tool for diff viewing and merge conflict resolution.
+teraz, Git będzie używał programu KDiff3 podczas pokazywania różnic oraz rozwiązywania konfliktów.
 
-Git comes preset to use a number of other merge-resolution tools without your having to set up the cmd configuration. You can set your merge tool to kdiff3, opendiff, tkdiff, meld, xxdiff, emerge, vimdiff, or gvimdiff. If you’re not interested in using KDiff3 for diff but rather want to use it just for merge resolution, and the kdiff3 command is in your path, then you can run
+<!-- Now, Git will use the KDiff3 tool for diff viewing and merge conflict resolution. -->
+
+Git jest wstępnie skonfigurowany do używania wielu innych narzędzi do łączenia i rozwiązywania konfliktów, bez konieczności wprowadzania konfiguracji odpowiednich komend. Możesz wybrać narzędzia takie jak  kdiff3, opendiff, tkdiff, meld, xxdiff, emerge, vimdiff, oraz gvimdiff. Jeżeli nie chcesz używać KDiff3 do pokazywania różnic, ale chcesz aby dalej służył do rozwiązywania konfliktów, w przypadku gdy kdiff3 znajduje się w zmiennej środowiskowej PATH, możesz uruchomić
+
+<!-- Git comes preset to use a number of other merge-resolution tools without your having to set up the cmd configuration. You can set your merge tool to kdiff3, opendiff, tkdiff, meld, xxdiff, emerge, vimdiff, or gvimdiff. If you’re not interested in using KDiff3 for diff but rather want to use it just for merge resolution, and the kdiff3 command is in your path, then you can run -->
 
 	$ git config --global merge.tool kdiff3
 
-If you run this instead of setting up the `extMerge` and `extDiff` files, Git will use KDiff3 for merge resolution and the normal Git diff tool for diffs.
+Jeżeli uruchomić tą komendę, zamiast ustawienia plików `extMerge` i `extDiff`, Git będzie używał KDiff3 do rozwiązywania konfliktów i standardowego narzędzia Git diff do pokazywania różnic.
 
-### Formatting and Whitespace ###
+<!-- If you run this instead of setting up the `extMerge` and `extDiff` files, Git will use KDiff3 for merge resolution and the normal Git diff tool for diffs. -->
 
-Formatting and whitespace issues are some of the more frustrating and subtle problems that many developers encounter when collaborating, especially cross-platform. It’s very easy for patches or other collaborated work to introduce subtle whitespace changes because editors silently introduce them or Windows programmers add carriage returns at the end of lines they touch in cross-platform projects. Git has a few configuration options to help with these issues.
+### Formatowanie i białe znaki ###
+
+<!-- ### Formatting and Whitespace ### -->
+
+Problemy związane z formatowaniem i białymi znakami są jednym z bardziej uciążliwych i wyrafinowanych problemów, które wielu deweloperów może spotkać podczas współpracy, szczególnie jeżeli korzystają z różnych systemów operacyjnych. Bardzo łatwo można wprowadzić zmiany w łatach lub innych modyfikacjach, które 
+
+Git posiada kilka opcji konfiguracyjnych, które pomagają rozwiązać te problemy.
+
+<!-- Formatting and whitespace issues are some of the more frustrating and subtle problems that many developers encounter when collaborating, especially cross-platform. It’s very easy for patches or other collaborated work to introduce subtle whitespace changes because editors silently introduce them or Windows programmers add carriage returns at the end of lines they touch in cross-platform projects. Git has a few configuration options to help with these issues. -->
 
 #### core.autocrlf ####
 

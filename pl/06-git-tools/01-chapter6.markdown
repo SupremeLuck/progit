@@ -968,7 +968,7 @@ To często występująca sytuacja. Ktoś niechcący zapisać duży plik za pomoc
 	Rewrite 6b9b3cf04e7c5686a9cb838c3f36a8cb6a0fc2bd (21/21)
 	Ref 'refs/heads/master' was rewritten
 
-Opcja `--tree-filter` umożliwia wykonanie jakiejś komendy po każdej zmianie i następnie ponownie zapisuje wynik. W tym przypadku, usuwasz plik passwords.txt z każdej migawki, bez względu na to czy on istnieje czy nie. Jeżeli chcesz usunąć wszystkie niechcący dodane kopie zapasowe plików stworzone przez edytor, możesz uruchomić coś podobnego do `git filter-branch --tree-filter "rm -f *~" HEAD`.
+Opcja `--tree-filter` umożliwia wykonanie jakiejś komendy po każdej zmianie i następnie ponownie zapisuje wynik. W tym przypadku, usuwasz plik passwords.txt z każdej migawki, bez względu na to czy on istnieje czy nie. Jeżeli chcesz usunąć wszystkie niechcący dodane kopie zapasowe plików stworzone przez edytor, możesz uruchomić coś podobnego do `git filter-branch --tree-filter "find * -type f -name '*~' -delete" HEAD`.
 
 <!-- The `-\-tree-filter` option runs the specified command after each checkout of the project and then recommits the results. In this case, you remove a file called passwords.txt from every snapshot, whether it exists or not. If you want to remove all accidentally committed editor backup files, you can run something like `git filter-branch -\-tree-filter "rm -f *~" HEAD`. -->
 
@@ -1096,7 +1096,7 @@ Git zobaczył, że 12 zmian było wprowadzonych między commitem który uznałe�
 	Bisecting: 3 revisions left to test after this
 	[b047b02ea83310a70fd603dc8cd7a6cd13d15c04] secure this thing
 
-Teraz jest na innym commicie, w połowie drogi między tym który właśnie przetestowałeś, a tym oznaczonym jako zły. Uruchamiasz swój test ponownie i widisz, że obecna wersja zawiera błąd, więc wskazujesz to Gitowi za pomocą `git bisect bad`:
+Teraz jest na innym commicie, w połowie drogi między tym który właśnie przetestowałeś, a tym oznaczonym jako zły. Uruchamiasz swój test ponownie i widzisz, że obecna wersja zawiera błąd, więc wskazujesz to Gitowi za pomocą `git bisect bad`:
 
 <!-- Now you’re on another commit, halfway between the one you just tested and your bad commit. You run your test again and find that this commit is broken, so you tell Git that with `git bisect bad`: -->
 
