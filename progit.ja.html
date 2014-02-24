@@ -31,7 +31,7 @@
 
 <h3>分散バージョン管理システム</h3>
 
-<p>ここから分散バージョン管理システム(DVCs)に入ります。DVCS(Git、Mercurial、Bazaar、Darcsのようなもの)では、クライアントはファイルの最新スナップショットをチェックアウト（訳者注：バージョン管理システムから、作業ディレクトリにファイルやディレクトリをコピーすること）するだけではありません。リポジトリ（訳者注：バージョン管理の対象になるファイル、ディレクトリ、更新履歴などの一群）全体をミラーリングします。故にどのサーバーが故障したとして、故障したサーバーを介してそれらのDVCSが共同作業をしていたとしても、あらゆるクライアント・リポジトリは修復のためにサーバーにコピーして戻す事ができます。そのサーバーを介してコラボレーションしていたシステムは, どれか一つのクライアントのリポジトリからサーバー復旧の為バックアップをコピーすることができます. 全てのチェックアウトは、実は全データの完全バックアップなのです(図1-3を参照)。</p>
+<p>ここから分散バージョン管理システム(DVCSs)に入ります。DVCS(Git、Mercurial、Bazaar、Darcsのようなもの)では、クライアントはファイルの最新スナップショットをチェックアウト（訳者注：バージョン管理システムから、作業ディレクトリにファイルやディレクトリをコピーすること）するだけではありません。リポジトリ（訳者注：バージョン管理の対象になるファイル、ディレクトリ、更新履歴などの一群）全体をミラーリングします。故にどのサーバーが故障したとして、故障したサーバーを介してそれらのDVCSが共同作業をしていたとしても、あらゆるクライアント・リポジトリは修復のためにサーバーにコピーして戻す事ができます。そのサーバーを介してコラボレーションしていたシステムは, どれか一つのクライアントのリポジトリからサーバー復旧の為バックアップをコピーすることができます. 全てのチェックアウトは、実は全データの完全バックアップなのです(図1-3を参照)。</p>
 
 <p><img src="figures/1.3.png" title="1.3 分散バージョン管理システムの図解" alt="1.3 分散バージョン管理システムの図解" /></p>
 
@@ -337,8 +337,8 @@ $ git commit -m 'initial project version'
 <p>どのファイルがどの状態にあるのかを知るために主に使うツールが <code>git status</code> コマンドです。このコマンドをクローン直後に実行すると、このような結果となるでしょう。</p>
 
 <pre><code>$ git status
-# On branch master
-nothing to commit (working directory clean)
+On branch master
+nothing to commit, working directory clean
 </code></pre>
 
 <p>これは、クリーンな作業コピーである (つまり、追跡されているファイルの中に変更されているものがない) ことを意味します。また、追跡されていないファイルも存在しません (もし追跡されていないファイルがあれば、Git はそれを表示します)。最後に、このコマンドを実行するとあなたが今どのブランチにいるのかを知ることができます。現時点では常に <code>master</code> となります。これはデフォルトであり、ここでは特に気にする必要はありません。ブランチについては次の章で詳しく説明します。</p>
@@ -347,11 +347,12 @@ nothing to commit (working directory clean)
 
 <pre><code>$ vim README
 $ git status
-# On branch master
-# Untracked files:
-#   (use "git add &lt;file&gt;..." to include in what will be committed)
-#
-#   README
+On branch master
+Untracked files:
+  (use "git add &lt;file&gt;..." to include in what will be committed)
+
+        README
+
 nothing added to commit but untracked files present (use "git add" to track)
 </code></pre>
 
@@ -367,12 +368,11 @@ nothing added to commit but untracked files present (use "git add" to track)
 <p>再び status コマンドを実行すると、<code>README</code> ファイルが追跡対象となり、ステージされていることがわかるでしょう。</p>
 
 <pre><code>$ git status
-# On branch master
-# Changes to be committed:
-#   (use "git reset HEAD &lt;file&gt;..." to unstage)
-#
-#   new file:   README
-#
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        new file:   README
 </code></pre>
 
 <p>ステージされていると判断できるのは、“Changes to be committed” 欄に表示されているからです。ここでコミットを行うと、<code>git add</code> した時点の状態のファイルがスナップショットとして歴史に書き込まれます。先ほど <code>git init</code> をしたときに、ディレクトリ内のファイルを追跡するためにその後 <code>git add (ファイル)</code> としたことを思い出すことでしょう。<code>git add</code> コマンドには、ファイルあるいはディレクトリのパスを指定します。ディレクトリを指定した場合は、そのディレクトリ以下にあるすべてのファイルを再帰的に追加します。</p>
@@ -382,61 +382,59 @@ nothing added to commit but untracked files present (use "git add" to track)
 <p>すでに追跡対象となっているファイルを変更してみましょう。たとえば、すでに追跡対象となっているファイル <code>benchmarks.rb</code> を変更して <code>status</code> コマンドを実行すると、結果はこのようになります。</p>
 
 <pre><code>$ git status
-# On branch master
-# Changes to be committed:
-#   (use "git reset HEAD &lt;file&gt;..." to unstage)
-#
-#   new file:   README
-#
-# Changes not staged for commit:
-#   (use "git add &lt;file&gt;..." to update what will be committed)
-#
-#   modified:   benchmarks.rb
-#
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        new file:   README
+
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+
+        modified:   benchmarks.rb
 </code></pre>
 
 <p><code>benchmarks.rb</code> ファイルは “Changes not staged for commit” という欄に表示されます。これは、追跡対象のファイルが作業ディレクトリ内で変更されたけれどもまだステージされていないという意味です。ステージするには <code>git add</code> コマンドを実行します (このコマンドにはいろんな意味合いがあり、新しいファイルの追跡開始・ファイルのステージング・マージ時に衝突が発生したファイルに対する「解決済み」マーク付けなどで使用します)。では、<code>git add</code> で <code>benchmarks.rb</code> をステージしてもういちど <code>git status</code> を実行してみましょう。</p>
 
 <pre><code>$ git add benchmarks.rb
 $ git status
-# On branch master
-# Changes to be committed:
-#   (use "git reset HEAD &lt;file&gt;..." to unstage)
-#
-#   new file:   README
-#   modified:   benchmarks.rb
-#
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        new file:   README
+        modified:   benchmarks.rb
 </code></pre>
 
 <p>両方のファイルがステージされました。これで、次回のコミットに両方のファイルが含まれるようになります。ここで、さらに <code>benchmarks.rb</code> にちょっとした変更を加えてからコミットしたくなったとしましょう。ファイルを開いて変更を終え、コミットの準備が整いました。しかし、<code>git status</code> を実行してみると何か変です。</p>
 
 <pre><code>$ vim benchmarks.rb
 $ git status
-# On branch master
-# Changes to be committed:
-#   (use "git reset HEAD &lt;file&gt;..." to unstage)
-#
-#   new file:   README
-#   modified:   benchmarks.rb
-#
-# Changes not staged for commit:
-#   (use "git add &lt;file&gt;..." to update what will be committed)
-#
-#   modified:   benchmarks.rb
-#
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        new file:   README
+        modified:   benchmarks.rb
+
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+
+        modified:   benchmarks.rb
 </code></pre>
 
 <p>これはどういうことでしょう? <code>benchmarks.rb</code> が、ステージされているほうにもステージされていないほうにも登場しています。こんなことってありえるんでしょうか? 要するに、Git は「<code>git add</code> コマンドを実行した時点の状態のファイル」をステージするということです。ここでコミットをすると、実際にコミットされるのは <code>git add</code> を実行した時点の <code>benchmarks.rb</code> であり、<code>git commit</code> した時点の作業ディレクトリにある内容とは違うものになります。<code>git add</code> した後にファイルを変更した場合に、最新版のファイルをステージしなおすにはもう一度 <code>git add</code> を実行します。</p>
 
 <pre><code>$ git add benchmarks.rb
 $ git status
-# On branch master
-# Changes to be committed:
-#   (use "git reset HEAD &lt;file&gt;..." to unstage)
-#
-#   new file:   README
-#   modified:   benchmarks.rb
-#
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        new file:   README
+        modified:   benchmarks.rb
 </code></pre>
 
 <h3>ファイルの無視</h3>
@@ -488,17 +486,17 @@ doc/**/*.txt
 <p>先ほどの続きで、ふたたび <code>README</code> ファイルを編集してステージし、一方 <code>benchmarks.rb</code> ファイルは編集だけしてステージしない状態にあると仮定しましょう。ここで <code>status</code> コマンドを実行すると、次のような結果となります。</p>
 
 <pre><code>$ git status
-# On branch master
-# Changes to be committed:
-#   (use "git reset HEAD &lt;file&gt;..." to unstage)
-#
-#   new file:   README
-#
-# Changes not staged for commit:
-#   (use "git add &lt;file&gt;..." to update what will be committed)
-#
-#   modified:   benchmarks.rb
-#
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        new file:   README
+
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+
+        modified:   benchmarks.rb
 </code></pre>
 
 <p>変更したけれどもまだステージしていない内容を見るには、引数なしで <code>git diff</code> を実行します。</p>
@@ -546,16 +544,17 @@ index 0000000..03902a1
 <pre><code>$ git add benchmarks.rb
 $ echo '# test line' &gt;&gt; benchmarks.rb
 $ git status
-# On branch master
-#
-# Changes to be committed:
-#
-#   modified:   benchmarks.rb
-#
-# Changes not staged for commit:
-#
-#   modified:   benchmarks.rb
-#
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        modified:   benchmarks.rb
+
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+
+        modified:   benchmarks.rb
 </code></pre>
 
 <p>ここで <code>git diff</code> を使うと、まだステージされていない内容を知ることができます。</p>
@@ -607,10 +606,9 @@ index 3cb747f..e445e28 100644
 # with '#' will be ignored, and an empty message aborts the commit.
 # On branch master
 # Changes to be committed:
-#   (use "git reset HEAD &lt;file&gt;..." to unstage)
-#
 #       new file:   README
 #       modified:   benchmarks.rb
+#
 ~
 ~
 ~
@@ -622,8 +620,8 @@ index 3cb747f..e445e28 100644
 <p>あるいは、コミットメッセージをインラインで記述することもできます。その場合は、<code>commit</code> コマンドの後で <code>-m</code> フラグに続けて次のように記述します。</p>
 
 <pre><code>$ git commit -m "Story 182: Fix benchmarks for speed"
-[master]: created 463dc4f: "Fix benchmarks for speed"
- 2 files changed, 3 insertions(+), 0 deletions(-)
+[master 463dc4f] Fix benchmarks for speed
+ 2 files changed, 3 insertions(+)
  create mode 100644 README
 </code></pre>
 
@@ -636,15 +634,17 @@ index 3cb747f..e445e28 100644
 <p>コミットの内容を思い通りに作り上げることができるという点でステージングエリアは非常に便利なのですが、普段の作業においては必要以上に複雑に感じられることもあるでしょう。ステージングエリアを省略したい場合のために、Git ではシンプルなショートカットを用意しています。<code>git commit</code> コマンドに <code>-a</code> オプションを指定すると、追跡対象となっているファイルを自動的にステージしてからコミットを行います。つまり <code>git add</code> を省略できるというわけです。</p>
 
 <pre><code>$ git status
-# On branch master
-#
-# Changes not staged for commit:
-#
-#   modified:   benchmarks.rb
-#
+On branch master
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+
+        modified:   benchmarks.rb
+
+no changes added to commit (use "git add" and/or "git commit -a")
 $ git commit -a -m 'added new benchmarks'
 [master 83e38c7] added new benchmarks
- 1 files changed, 5 insertions(+), 0 deletions(-)
+ 1 files changed, 5 insertions(+)
 </code></pre>
 
 <p>この場合、コミットする前に <code>benchmarks.rb</code> を <code>git add</code> する必要がないことに注意しましょう。</p>
@@ -657,13 +657,14 @@ $ git commit -a -m 'added new benchmarks'
 
 <pre><code>$ rm grit.gemspec
 $ git status
-# On branch master
-#
-# Changes not staged for commit:
-#   (use "git add/rm &lt;file&gt;..." to update what will be committed)
-#
-#       deleted:    grit.gemspec
-#
+On branch master
+Changes not staged for commit:
+  (use "git add/rm &lt;file&gt;..." to update what will be committed)
+  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+
+        deleted:    grit.gemspec
+
+no changes added to commit (use "git add" and/or "git commit -a")
 </code></pre>
 
 <p><code>git rm</code> を実行すると、ファイルの削除がステージされます。</p>
@@ -671,13 +672,11 @@ $ git status
 <pre><code>$ git rm grit.gemspec
 rm 'grit.gemspec'
 $ git status
-# On branch master
-#
-# Changes to be committed:
-#   (use "git reset HEAD &lt;file&gt;..." to unstage)
-#
-#       deleted:    grit.gemspec
-#
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        deleted:    grit.gemspec
 </code></pre>
 
 <p>次にコミットするときにファイルが削除され、追跡対象外となります。変更したファイルをすでにステージしている場合は、<code>-f</code> オプションで強制的に削除しなければなりません。まだスナップショットに記録されていないファイルを誤って削除してしまうと Git で復旧することができなくなってしまうので、それを防ぐための安全装置です。</p>
@@ -712,14 +711,11 @@ $ git status
 
 <pre><code>$ git mv README.txt README
 $ git status
-# On branch master
-# Your branch is ahead of 'origin/master' by 1 commit.
-#
-# Changes to be committed:
-#   (use "git reset HEAD &lt;file&gt;..." to unstage)
-#
-#       renamed:    README.txt -&gt; README
-#
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        renamed:    README.txt -&gt; README
 </code></pre>
 
 <p>しかし、実際のところこれは、次のようなコマンドを実行するのと同じ意味となります。</p>
@@ -842,7 +838,7 @@ Date:   Mon Mar 17 21:52:11 2008 -0700
     changed the version number
 
  Rakefile |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 commit 085bb3bcb608e1e8451d4b2432f8ecbe6306e7e7
 Author: Scott Chacon &lt;schacon@gee-mail.com&gt;
@@ -851,7 +847,7 @@ Date:   Sat Mar 15 16:40:33 2008 -0700
     removed unnecessary test code
 
  lib/simplegit.rb |    5 -----
- 1 files changed, 0 insertions(+), 5 deletions(-)
+ 1 file changed, 5 deletions(-)
 
 commit a11bef06a3f659402fe7563abf99ad00de2209e6
 Author: Scott Chacon &lt;schacon@gee-mail.com&gt;
@@ -862,7 +858,7 @@ Date:   Sat Mar 15 10:31:28 2008 -0700
  README           |    6 ++++++
  Rakefile         |   23 +++++++++++++++++++++++
  lib/simplegit.rb |   25 +++++++++++++++++++++++++
- 3 files changed, 54 insertions(+), 0 deletions(-)
+ 3 files changed, 54 insertions(+)
 </code></pre>
 
 <p>ごらんの通り <code>--stat</code> オプションは、各コミットエントリに続けて変更されたファイルの一覧と変更されたファイルの数、追加・削除された行数が表示されます。また、それらの情報のまとめを最後に出力します。もうひとつの便利なオプションが <code>--pretty</code> です。これは、ログをデフォルトの書式以外で出力します。あらかじめ用意されているいくつかのオプションを指定することができます。<code>oneline</code> オプションは、各コミットを一行で出力します。これは、大量のコミットを見る場合に便利です。さらに <code>short</code> や <code>full</code> そして <code>fuller</code> といったオプションもあり、これは標準とほぼ同じ書式だけれども情報量がそれぞれ少なめあるいは多めになります。</p>
@@ -948,7 +944,7 @@ The lines must be formatted as follows
 
 <h3>ログ出力の制限</h3>
 
-<p>出力のフォーマット用オプションだけでなく、git log にはログの制限用の便利なオプションもあります。コミットの一部だけを表示するようなオプションのことです。既にひとつだけ紹介していますね。<code>-2</code> オプション、これは直近のふたつのコミットだけを表示するものです。実は <code>-&lt;n&gt;</code> の <code>n</code> には任意の整数値を指定することができ、直近の <code>n</code> 件のコミットだけを表示させることができます。ただ、実際のところはこれを使うことはあまりないでしょう。というのも、Git はデフォルトですべての出力をページャにパイプするので、ログを一度に 1 ページだけ見ることになるからです。</p>
+<p>出力のフォーマット用オプションだけでなく、 <code>git log</code> にはログの制限用の便利なオプションもあります。コミットの一部だけを表示するようなオプションのことです。既にひとつだけ紹介していますね。<code>-2</code> オプション、これは直近のふたつのコミットだけを表示するものです。実は <code>-&lt;n&gt;</code> の <code>n</code> には任意の整数値を指定することができ、直近の <code>n</code> 件のコミットだけを表示させることができます。ただ、実際のところはこれを使うことはあまりないでしょう。というのも、Git はデフォルトですべての出力をページャにパイプするので、ログを一度に 1 ページだけ見ることになるからです。</p>
 
 <p>しかし <code>--since</code> や <code>--until</code> のような時間制限のオプションは非常に便利です。たとえばこのコマンドは、過去二週間のコミットの一覧を取得します。</p>
 
@@ -1029,32 +1025,31 @@ $ git commit --amend
 
 <pre><code>$ git add .
 $ git status
-# On branch master
-# Changes to be committed:
-#   (use "git reset HEAD &lt;file&gt;..." to unstage)
-#
-#       modified:   README.txt
-#       modified:   benchmarks.rb
-#
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        modified:   README.txt
+        modified:   benchmarks.rb
 </code></pre>
 
 <p>“Changes to be committed” の直後に、"use <code>git reset HEAD &lt;file&gt;...</code> to unstage" と書かれています。では、アドバイスに従って <code>benchmarks.rb</code> ファイルのステージを解除してみましょう。</p>
 
 <pre><code>$ git reset HEAD benchmarks.rb
-benchmarks.rb: locally modified
+Unstaged changes after reset:
+M       benchmarks.rb
 $ git status
-# On branch master
-# Changes to be committed:
-#   (use "git reset HEAD &lt;file&gt;..." to unstage)
-#
-#       modified:   README.txt
-#
-# Changes not staged for commit:
-#   (use "git add &lt;file&gt;..." to update what will be committed)
-#   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
-#
-#       modified:   benchmarks.rb
-#
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        modified:   README.txt
+
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+
+        modified:   benchmarks.rb
 </code></pre>
 
 <p>ちょっと奇妙に見えるコマンドですが、きちんと動作します。<code>benchmarks.rb</code> ファイルは、変更されたもののステージされていない状態に戻りました。</p>
@@ -1063,24 +1058,22 @@ $ git status
 
 <p><code>benchmarks.rb</code> に加えた変更が、実は不要なものだったとしたらどうしますか? 変更を取り消す (直近のコミット時点の状態、あるいは最初にクローンしたり最初に作業ディレクトリに取得したときの状態に戻す) 最も簡単な方法は? 幸いなことに、またもや <code>git status</code> がその方法を教えてくれます。先ほどの例の出力結果で、ステージされていないファイル一覧の部分を見てみましょう。</p>
 
-<pre><code># Changes not staged for commit:
-#   (use "git add &lt;file&gt;..." to update what will be committed)
-#   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
-#
-#       modified:   benchmarks.rb
-#
+<pre><code>Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+
+        modified:   benchmarks.rb
 </code></pre>
 
 <p>とても明確に、変更を取り消す方法が書かれています (少なくとも、バージョン 1.6.1 以降の新しい Git ではこのようになります。もし古いバージョンを使用しているのなら、アップグレードしてこのすばらしい機能を活用することをおすすめします)。ではそのとおりにしてみましょう。</p>
 
 <pre><code>$ git checkout -- benchmarks.rb
 $ git status
-# On branch master
-# Changes to be committed:
-#   (use "git reset HEAD &lt;file&gt;..." to unstage)
-#
-#       modified:   README.txt
-#
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        modified:   README.txt
 </code></pre>
 
 <p>変更が取り消されたことがわかります。また、これが危険なコマンドであることも知っておかねばなりません。あなたがファイルに加えた変更はすべて消えてしまいます。変更した内容を、別のファイルで上書きしたのと同じことになります。そのファイルが不要であることが確実にわかっているとき以外は、このコマンドを使わないようにしましょう。単にファイルを片付けたいだけなら、次の章で説明する stash やブランチを調べてみましょう。一般にこちらのほうがおすすめの方法です。</p>
@@ -1096,12 +1089,12 @@ $ git status
 <p>今までにどのリモートサーバーを設定したのかを知るには <code>git remote</code> コマンドを実行します。これは、今までに設定したリモートハンドルの名前を一覧表示します。リポジトリをクローンしたのなら、少なくとも <em>origin</em> という名前が見えるはずです。これは、クローン元のサーバーに対して Git がデフォルトでつける名前です。</p>
 
 <pre><code>$ git clone git://github.com/schacon/ticgit.git
-Initialized empty Git repository in /private/tmp/ticgit/.git/
-remote: Counting objects: 595, done.
-remote: Compressing objects: 100% (269/269), done.
-remote: Total 595 (delta 255), reused 589 (delta 253)
-Receiving objects: 100% (595/595), 73.31 KiB | 1 KiB/s, done.
-Resolving deltas: 100% (255/255), done.
+Cloning into 'ticgit'...
+remote: Reusing existing pack: 1857, done.
+remote: Total 1857 (delta 0), reused 0 (delta 0)
+Receiving objects: 100% (1857/1857), 374.35 KiB | 193.00 KiB/s, done.
+Resolving deltas: 100% (772/772), done.
+Checking connectivity... done.
 $ cd ticgit
 $ git remote
 origin
@@ -1286,6 +1279,7 @@ Tagger: Scott Chacon &lt;schacon@gee-mail.com&gt;
 Date:   Mon Feb 9 14:45:11 2009 -0800
 
 my version 1.4
+
 commit 15027957951b64cf874c3557a0f3547bd83b3ff6
 Merge: 4a447f7... a6b4c97...
 Author: Scott Chacon &lt;schacon@gee-mail.com&gt;
@@ -1657,7 +1651,7 @@ $ git commit -a -m 'made other changes'
 <p>ここで、あなたの勤務先で使っている何らかの問題追跡システムに登録されている問題番号 53 への対応を始めることにしました。念のために言っておくと、Git は何かの問題追跡システムと連動しているわけではありません。しかし、今回の作業はこの問題番号 53 に対応するものであるため、作業用に新しいブランチを作成します。ブランチの作成と新しいブランチへの切り替えを同時に行うには、<code>git checkout</code> コマンドに <code>-b</code> スイッチをつけて実行します。</p>
 
 <pre><code>$ git checkout -b iss53
-Switched to a new branch "iss53"
+Switched to a new branch 'iss53'
 </code></pre>
 
 <p>これは、次のコマンドのショートカットです。</p>
@@ -1683,7 +1677,7 @@ $ git commit -a -m 'added a new footer [issue 53]'
 <p>しかしその前に注意すべき点があります。作業ディレクトリやステージングエリアに未コミットの変更が残っている場合、それがもしチェックアウト先のブランチと衝突する内容ならブランチの切り替えはできません。ブランチを切り替える際には、クリーンな状態にしておくのが一番です。これを回避する方法もあります (stash およびコミットの amend という処理です) が、また後ほど説明します。今回はすべての変更をコミットし終えているので、master ブランチに戻ることができます。</p>
 
 <pre><code>$ git checkout master
-Switched to branch "master"
+Switched to branch 'master'
 </code></pre>
 
 <p>作業ディレクトリは問題番号 53 の対応を始める前とまったく同じ状態に戻りました。これで、緊急の問題対応に集中できます。ここで覚えておくべき重要な点は、Git が作業ディレクトリの状態をリセットし、チェックアウトしたブランチが指すコミットの時と同じ状態にするということです。そのブランチにおける直近のコミットと同じ状態にするため、ファイルの追加・削除・変更を自動的に行います。</p>
@@ -1691,11 +1685,11 @@ Switched to branch "master"
 <p>次に、緊急の問題対応を行います。緊急作業用に hotfix ブランチを作成し、作業をそこで進めるようにしましょう (図 3-13 を参照ください)。</p>
 
 <pre><code>$ git checkout -b hotfix
-Switched to a new branch "hotfix"
+Switched to a new branch 'hotfix'
 $ vim index.html
 $ git commit -a -m 'fixed the broken email address'
-[hotfix]: created 3a0874c: "fixed the broken email address"
- 1 files changed, 0 insertions(+), 1 deletions(-)
+[hotfix 3a0874c] fixed the broken email address
+ 1 files changed, 1 deletion(-)
 </code></pre>
 
 <p><img src="figures/3.13.png" title="3.13 master ブランチから新たに作成した hotfix ブランチ" alt="3.13 master ブランチから新たに作成した hotfix ブランチ" /></p>
@@ -1705,12 +1699,12 @@ $ git commit -a -m 'fixed the broken email address'
 <pre><code>$ git checkout master
 $ git merge hotfix
 Updating f42c576..3a0874c
-Fast forward
- README |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
+Fast-forward
+ README | 1 -
+ 1 file changed, 1 deletion(-)
 </code></pre>
 
-<p>このマージ処理で "Fast forward" というフレーズが登場したのにお気づきでしょうか。マージ先のブランチが指すコミットがマージ元のコミットの直接の親であるため、Git がポインタを前に進めたのです。言い換えると、あるコミットに対してコミット履歴上で直接到達できる別のコミットをマージしようとした場合、Git は単にポインタを前に進めるだけで済ませます。マージ対象が分岐しているわけではないからです。この処理のことを "fast forward" と言います。</p>
+<p>このマージ処理で "Fast-forward" というフレーズが登場したのにお気づきでしょうか。マージ先のブランチが指すコミットがマージ元のコミットの直接の親であるため、Git がポインタを前に進めたのです。言い換えると、あるコミットに対してコミット履歴上で直接到達できる別のコミットをマージしようとした場合、Git は単にポインタを前に進めるだけで済ませます。マージ対象が分岐しているわけではないからです。この処理のことを "fast forward" と言います。</p>
 
 <p>変更した内容が、これで <code>master</code> ブランチの指すスナップショットに反映されました。これで変更をリリースできます (図 3-14 を参照ください)。</p>
 
@@ -1719,17 +1713,17 @@ Fast forward
 <p>超重要な修正作業が終わったので、横やりが入る前にしていた作業に戻ることができます。しかしその前に、まずは <code>hotfix</code> ブランチを削除しておきましょう。<code>master</code> ブランチが同じ場所を指しているので、もはやこのブランチは不要だからです。削除するには <code>git branch</code> で <code>-d</code> オプションを指定します。</p>
 
 <pre><code>$ git branch -d hotfix
-Deleted branch hotfix (3a0874c).
+Deleted branch hotfix (was 3a0874c).
 </code></pre>
 
 <p>では、先ほどまで問題番号 53 の対応をしていたブランチに戻り、作業を続けましょう (図 3-15 を参照ください)。</p>
 
 <pre><code>$ git checkout iss53
-Switched to branch "iss53"
+Switched to branch 'iss53'
 $ vim index.html
 $ git commit -a -m 'finished the new footer [issue 53]'
-[iss53]: created ad82d7a: "finished the new footer [issue 53]"
- 1 files changed, 1 insertions(+), 0 deletions(-)
+[iss53 ad82d7a] finished the new footer [issue 53]
+ 1 file changed, 1 insertion(+)
 </code></pre>
 
 <p><img src="figures/3.15.png" title="3.15 iss53 ブランチは独立して進めることができる" alt="3.15 iss53 ブランチは独立して進めることができる" /></p>
@@ -1742,9 +1736,10 @@ $ git commit -a -m 'finished the new footer [issue 53]'
 
 <pre><code>$ git checkout master
 $ git merge iss53
-Merge made by recursive.
- README |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+Auto-merging README
+Merge made by the 'recursive' strategy.
+ README | 1 +
+ 1 file changed, 1 insertion(+)
 </code></pre>
 
 <p>先ほどの <code>hotfix</code> のマージとはちょっとちがう感じですね。今回の場合、開発の歴史が過去のとある時点で分岐しています。マージ先のコミットがマージ元のコミットの直系の先祖ではないため、Git 側でちょっとした処理が必要だったのです。ここでは、各ブランチが指すふたつのスナップショットとそれらの共通の先祖との間で三方向のマージを行いました。図 3-16 に、今回のマージで使用した三つのスナップショットを示します。</p>
@@ -1774,26 +1769,28 @@ Automatic merge failed; fix conflicts and then commit the result.
 
 <p>Git は新たなマージコミットを自動的には作成しませんでした。コンフリクトを解決するまで、処理は中断されます。コンフリクトが発生してマージできなかったのがどのファイルなのかを知るには <code>git status</code> を実行します。</p>
 
-<pre><code>[master*]$ git status
-index.html: needs merge
-# On branch master
-# Changes not staged for commit:
-#   (use "git add &lt;file&gt;..." to update what will be committed)
-#   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
-#
-#   unmerged:   index.html
-#
+<pre><code>$ git status
+On branch master
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+
+Unmerged paths:
+  (use "git add &lt;file&gt;..." to mark resolution)
+
+        both modified:      index.html
+
+no changes added to commit (use "git add" and/or "git commit -a")
 </code></pre>
 
 <p>コンフリクトが発生してまだ解決されていないものについては unmerged として表示されます。Git は、標準的なコンフリクトマーカーをファイルに追加するので、ファイルを開いてそれを解決することにします。コンフリクトが発生したファイルの中には、このような部分が含まれています。</p>
 
-<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD:index.html
+<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
 &lt;div id="footer"&gt;contact : email.support@github.com&lt;/div&gt;
 =======
 &lt;div id="footer"&gt;
   please contact us at support@github.com
 &lt;/div&gt;
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; iss53:index.html
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; iss53
 </code></pre>
 
 <p>これは、HEAD (merge コマンドを実行したときにチェックアウトしていたブランチなので、ここでは master となります) の内容が上の部分 (<code>=======</code> の上にある内容)、そして <code>iss53</code> ブランチの内容が下の部分であるということです。コンフリクトを解決するには、どちらを採用するかをあなたが判断することになります。たとえば、ひとつの解決法としてブロック全体を次のように書き換えます。</p>
@@ -1806,12 +1803,17 @@ please contact us at email.support@github.com
 <p>このような解決を各部分に対して行い、<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> や <code>=======</code> そして <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> の行をすべて除去します。そしてすべてのコンフリクトを解決したら、各ファイルに対して <code>git add</code> を実行して解決済みであることを通知します。ファイルをステージすると、Git はコンフリクトが解決されたと見なします。コンフリクトの解決をグラフィカルに行いたい場合は <code>git mergetool</code> を実行します。これは、適切なビジュアルマージツールを立ち上げてコンフリクトの解消を行います。</p>
 
 <pre><code>$ git mergetool
-merge tool candidates: kdiff3 tkdiff xxdiff meld gvimdiff opendiff emerge vimdiff
-Merging the files: index.html
+
+This message is displayed because 'merge.tool' is not configured.
+See 'git mergetool --tool-help' or 'git help config' for more details.
+'git mergetool' will now attempt to use one of the following tools:
+opendiff kdiff3 tkdiff xxdiff meld tortoisemerge gvimdiff diffuse diffmerge ecmerge p4merge araxis bc3 codecompare vimdiff emerge
+Merging:
+index.html
 
 Normal merge conflict for 'index.html':
-  {local}: modified
-  {remote}: modified
+  {local}: modified file
+  {remote}: modified file
 Hit return to start merge resolution tool (opendiff):
 </code></pre>
 
@@ -1822,12 +1824,11 @@ Hit return to start merge resolution tool (opendiff):
 <p>再び <code>git status</code> を実行すると、すべてのコンフリクトが解決したことを確認できます。</p>
 
 <pre><code>$ git status
-# On branch master
-# Changes to be committed:
-#   (use "git reset HEAD &lt;file&gt;..." to unstage)
-#
-#   modified:   index.html
-#
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        modified:   index.html
 </code></pre>
 
 <p>結果に満足し、すべてのコンフリクトがステージされていることが確認できたら、<code>git commit</code> を実行してマージコミットを完了させます。デフォルトのコミットメッセージは、このようになります。</p>
@@ -1837,9 +1838,9 @@ Hit return to start merge resolution tool (opendiff):
 Conflicts:
   index.html
 #
-# It looks like you may be committing a MERGE.
+# It looks like you may be committing a merge.
 # If this is not correct, please remove the file
-# .git/MERGE_HEAD
+#       .git/MERGE_HEAD
 # and try again.
 #
 </code></pre>
@@ -1884,7 +1885,7 @@ Conflicts:
 <p>先ほどのブランチとは別のブランチが表示されます。まだマージしていない作業が残っているので、このブランチを <code>git branch -d</code> で削除しようとしても失敗します。</p>
 
 <pre><code>$ git branch -d testing
-error: The branch 'testing' is not an ancestor of your current HEAD.
+error: The branch 'testing' is not fully merged.
 If you are sure you want to delete it, run 'git branch -D testing'.
 </code></pre>
 
@@ -1985,8 +1986,8 @@ From git@github.com:schacon/simplegit
 <p>この作業を現在の作業ブランチにマージするには、<code>git merge origin/serverfix</code> を実行します。ローカル環境に <code>serverfix</code> ブランチを作ってそこで作業を進めたい場合は、リモートブランチからそれを作成します。</p>
 
 <pre><code>$ git checkout -b serverfix origin/serverfix
-Branch serverfix set up to track remote branch refs/remotes/origin/serverfix.
-Switched to a new branch "serverfix"
+Branch serverfix set up to track remote branch serverfix from origin.
+Switched to a new branch 'serverfix'
 </code></pre>
 
 <p>これで、<code>origin/serverfix</code> が指す先から作業を開始するためのローカルブランチができあがりました。</p>
@@ -1998,18 +1999,18 @@ Switched to a new branch "serverfix"
 <p>あるリポジトリをクローンしたら、自動的に <code>master</code> ブランチを作成し、<code>origin/master</code> を追跡するようになります。これが、<code>git push</code> や <code>git pull</code> が引数なしでもうまく動作する理由です。しかし、必要に応じてそれ以外の追跡ブランチを作成し、<code>origin</code> 以外にあるブランチや <code>master</code> 以外のブランチを追跡させることも可能です。シンプルな方法としては、<code>git checkout -b [branch] [remotename]/[branch]</code> を実行します。Git バージョン 1.6.2 以降では、より簡単に <code>--track</code> を使うことができます。</p>
 
 <pre><code>$ git checkout --track origin/serverfix
-Branch serverfix set up to track remote branch refs/remotes/origin/serverfix.
-Switched to a new branch "serverfix"
+Branch serverfix set up to track remote branch serverfix from origin.
+Switched to a new branch 'serverfix'
 </code></pre>
 
 <p>ローカルブランチをリモートブランチと違う名前にしたい場合は、最初に紹介した方法でローカルブランチに別の名前を指定します。</p>
 
 <pre><code>$ git checkout -b sf origin/serverfix
-Branch sf set up to track remote branch refs/remotes/origin/serverfix.
-Switched to a new branch "sf"
+Branch sf set up to track remote branch serverfix from origin.
+Switched to a new branch 'sf'
 </code></pre>
 
-<p>これで、ローカルブランチ sf が自動的に origin/serverfix を追跡するようになりました。</p>
+<p>これで、ローカルブランチ <code>sf</code> が自動的に <code>origin/serverfix</code> を追跡するようになりました。</p>
 
 <h3>リモートブランチの削除</h3>
 
@@ -2157,7 +2158,7 @@ $ git branch -d server
 
 <h3>Local プロトコル</h3>
 
-<p>一番基本的なプロトコルが <em>Local プロトコル</em>, です。これは、リモートリポジトリをディスク上の別のディレクトリに置くものです。これがよく使われるのは、たとえばチーム全員がアクセスできる共有ファイルシステム (NFS など) がある場合です。あるいは、あまりないでしょうが全員が同じコンピューターにログインしている場合にも使えます。後者のパターンはあまりお勧めできません。すべてのコードリポジトリが同じコンピューター上に存在することになるので、何か事故が起こったときに何もかも失ってしまう可能性があります。</p>
+<p>一番基本的なプロトコルが <em>Local プロトコル</em> です。これは、リモートリポジトリをディスク上の別のディレクトリに置くものです。これがよく使われるのは、たとえばチーム全員がアクセスできる共有ファイルシステム (NFS など) がある場合です。あるいは、あまりないでしょうが全員が同じコンピューターにログインしている場合にも使えます。後者のパターンはあまりお勧めできません。すべてのコードリポジトリが同じコンピューター上に存在することになるので、何か事故が起こったときに何もかも失ってしまう可能性があります。</p>
 
 <p>共有ファイルシステムをマウントしているのなら、それをローカルのファイルベースのリポジトリにクローンしたりお互いの間でプッシュやプルをしたりすることができます。この手のリポジトリをクローンしたり既存のプロジェクトのリモートとして追加したりするには、リポジトリへのパスを URL に指定します。たとえば、ローカルリポジトリにクローンするにはこのようなコマンドを実行します。</p>
 
@@ -2169,7 +2170,7 @@ $ git branch -d server
 <pre><code>$ git clone file:///opt/git/project.git
 </code></pre>
 
-<p>URL の先頭に <code>file://</code> を明示するかどうかで、Git の動きは微妙に異なります。単にパスを指定した場合は、Git はハードリンクを行うか、必要に応じて直接ファイルをコピーします。<code>file://</code> を指定した場合は、Git がプロセスを立ち上げ、そのプロセスが (通常は) ネットワーク越しにデータを転送します。一般的に、直接のコピーに比べてこれは非常に非効率的です。<code>file://</code> プレフィックスをつける最も大きな理由は、(他のバージョン管理システムからインポートしたときなどにあらわれる) 関係のない参照やオブジェクトを除いたクリーンなコピーがほしいということです。本書では通常のパス表記を使用します。そのほうがたいていの場合に高速となるからです。</p>
+<p>URL の先頭に <code>file://</code> を明示するかどうかで、Git の動きは微妙に異なります。<code>file://</code> を明示せずパスだけを指定し、かつコピー元とコピー先が同一のファイルシステム上にある場合は、Git は必要なオブジェクトにハードリンクを張ろうとします。もし異なるファイルシステム上にある場合は、Git はシステムデフォルトのファイルコピー機能を使って必要なオブジェクトをコピーします。一方 <code>file://</code> を指定した場合は、Git がプロセスを立ち上げ、そのプロセスが (通常は) ネットワーク越しにデータを転送します。一般的に、直接のコピーに比べてこれは非常に非効率的です。<code>file://</code> プレフィックスをつける最も大きな理由は、(他のバージョン管理システムからインポートしたときなどにあらわれる) 関係のない参照やオブジェクトを除いたクリーンなコピーがほしいということです。本書では通常のパス表記を使用します。そのほうがたいていの場合に高速となるからです。</p>
 
 <p>ローカルのリポジトリを既存の Git プロジェクトに追加するには、このようなコマンドを実行します。</p>
 
@@ -2216,7 +2217,7 @@ $ git branch -d server
 
 <h3>Git プロトコル</h3>
 
-<p>次は Git プロトコルです。これは Git に標準で付属する特別なデーモンです。専用のポート (9418) をリスンし、SSH プロトコルと同様のサービスを提供しますが、認証は行いません。Git プロトコルを提供するリポジトリを準備するには、<code>git-export-daemon-ok</code> というファイルを作らなければなりません (このファイルがなければデーモンはサービスを提供しません)。ただ、このままでは一切セキュリティはありません。Git リポジトリをすべての人に開放し、クローンさせることができます。しかし、一般に、このプロトコルでプッシュさせることはありません。プッシュアクセスを認めることは可能です。しかし認証がないということは、その URL を知ってさえいればインターネット上の誰もがプロジェクトにプッシュできるということになります。これはありえない話だと言っても差し支えないでしょう。</p>
+<p>次は Git プロトコルです。これは Git に標準で付属する特別なデーモンです。専用のポート (9418) をリスンし、SSH プロトコルと同様のサービスを提供しますが、認証は行いません。Git プロトコルを提供するリポジトリを準備するには、<code>git-daemon-export-ok</code> というファイルを作らなければなりません (このファイルがなければデーモンはサービスを提供しません)。ただ、このままでは一切セキュリティはありません。Git リポジトリをすべての人に開放し、クローンさせることができます。しかし、一般に、このプロトコルでプッシュさせることはありません。プッシュアクセスを認めることは可能です。しかし認証がないということは、その URL を知ってさえいればインターネット上の誰もがプロジェクトにプッシュできるということになります。これはありえない話だと言っても差し支えないでしょう。</p>
 
 <h4>利点</h4>
 
@@ -2263,10 +2264,11 @@ $ chmod a+x hooks/post-update
 <p>Git サーバーを立ち上げるには、既存のリポジトリをエクスポートして新たなベアリポジトリ (作業ディレクトリを持たないリポジトリ) を作らなければなりません。これは簡単にできます。リポジトリをクローンして新たにベアリポジトリを作成するには、clone コマンドでオプション <code>--bare</code> を指定します。慣例により、ベアリポジトリのディレクトリ名の最後は <code>.git</code> とすることになっています。</p>
 
 <pre><code>$ git clone --bare my_project my_project.git
-Initialized empty Git repository in /opt/projects/my_project.git/
+Cloning into bare repository 'my_project.git'...
+done.
 </code></pre>
 
-<p>このコマンドを実行したときの出力はちょっとわかりにくいかもしれません。<code>clone</code> は基本的に <code>git init</code> をしてから <code>git fetch</code> をするのと同じことなので、<code>git init</code> の部分の部分の出力も見ることになります。そのメッセージは「空のディレクトリを作成しました」というものです。実際にどんなオブジェクトの転送が行われたのかは何も表示されませんが、きちんと転送は行われています。これで、<code>my_project.git</code> ディレクトリに Git リポジトリのデータができあがりました。</p>
+<p>このコマンドを実行したときの出力はちょっとわかりにくいかもしれません。<code>clone</code> は基本的に <code>git init</code> をしてから <code>git fetch</code> をするのと同じことなので、<code>git init</code> の部分の出力も見ることになります。そのメッセージは「空のディレクトリを作成しました」というものです。実際にどんなオブジェクトの転送が行われたのかは何も表示されませんが、きちんと転送は行われています。これで、<code>my_project.git</code> ディレクトリに Git リポジトリのデータができあがりました。</p>
 
 <p>これは、おおざっぱに言うと次の操作と同じようなことです。</p>
 
@@ -2341,7 +2343,7 @@ The key fingerprint is:
 
 <p>まず、鍵の保存先 (<code>.ssh/id_rsa</code>) を指定し、それからパスフレーズを二回入力するよう求められます。鍵を使うときにパスフレーズを入力したくない場合は、パスフレーズを空のままにしておきます。</p>
 
-<p>さて、次に各ユーザーは自分の公開鍵をあなた (あるいは Git サーバーの管理者である誰か) に送らなければなりません (ここでは、すでに公開鍵認証を使用するように SSH サーバーが設定済みであると仮定します)。公開鍵を送るには、<code>.pub</code> ファイルの中身をコピーしてメールで送ります (訳注: メールなんかで送っていいの? とツッコミたいところだ……)。公開鍵は、このようなファイルになります。</p>
+<p>さて、次に各ユーザーは自分の公開鍵をあなた (あるいは Git サーバーの管理者である誰か) に送らなければなりません (ここでは、すでに公開鍵認証を使用するように SSH サーバーが設定済みであると仮定します)。公開鍵を送るには、<code>.pub</code> ファイルの中身をコピーしてメールで送ります。公開鍵は、このようなファイルになります。</p>
 
 <pre><code>$ cat ~/.ssh/id_rsa.pub
 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAklOUpkDHrfHY17SbrmTIpNLTGK9Tjom/BWDSU
@@ -2451,6 +2453,13 @@ $ chmod a+x hooks/post-update
 
 <pre><code>$ cat .git/hooks/post-update
 #!/bin/sh
+#
+# An example hook script to prepare a packed repository for use over
+# dumb transports.
+#
+# To enable this hook, rename this file to "post-update".
+#
+
 exec git-update-server-info
 </code></pre>
 
@@ -2540,7 +2549,7 @@ $ sudo cp -Rf gitweb /var/www/
 
 <p>次に、プロジェクトのメインサイトから Gitosis をクローンしてインストールします。</p>
 
-<pre><code>$ git clone git://eagain.net/gitosis.git
+<pre><code>$ git clone https://github.com/tv42/gitosis.git
 $ cd gitosis
 $ sudo python setup.py install
 </code></pre>
@@ -2581,7 +2590,7 @@ Reinitialized existing Git repository in /opt/git/gitosis-admin.git/
 
 <pre><code>$ ssh git@gitserver
 PTY allocation request failed on channel 0
-fatal: unrecognized command 'gitosis-serve schacon@quaternion'
+ERROR:gitosis.serve.main:Need SSH_ORIGINAL_COMMAND in environment.
   Connection to gitserver closed.
 </code></pre>
 
@@ -2608,8 +2617,8 @@ $ find .
 [gitosis]
 
 [group gitosis-admin]
-writable = gitosis-admin
 members = scott
+writable = gitosis-admin
 </code></pre>
 
 <p>これは、'scott' ユーザー（Gitosis の初期化時に公開鍵を指定したユーザー）だけが <code>gitosis-admin</code> プロジェクトにアクセスできるという意味です。</p>
@@ -2617,21 +2626,21 @@ members = scott
 <p>では、新しいプロジェクトを追加してみましょう。<code>mobile</code> という新しいセクションを作成し、モバイルチームのメンバーとモバイルチームがアクセスするプロジェクトを書き入れます。今のところ存在するユーザーは 'scott' だけなので、とりあえずは彼をメンバーとして追加します。そして、新しいプロジェクト <code>iphone_project</code> を作ることにしましょう。</p>
 
 <pre><code>[group mobile]
-writable = iphone_project
 members = scott
+writable = iphone_project
 </code></pre>
 
 <p><code>gitosis-admin</code> プロジェクトに手を入れたら、それをコミットしてサーバーにプッシュしないと変更が反映されません。</p>
 
 <pre><code>$ git commit -am 'add iphone_project and mobile group'
-[master]: created 8962da8: "changed name"
- 1 files changed, 4 insertions(+), 0 deletions(-)
-$ git push
+[master 8962da8] add iphone_project and mobile group
+ 1 file changed, 4 insertions(+)
+$ git push origin master
 Counting objects: 5, done.
-Compressing objects: 100% (2/2), done.
-Writing objects: 100% (3/3), 272 bytes, done.
-Total 3 (delta 1), reused 0 (delta 0)
-To git@gitserver:/opt/git/gitosis-admin.git
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 272 bytes | 0 bytes/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To git@gitserver:gitosis-admin.git
    fb27aec..8962da8  master -&gt; master
 </code></pre>
 
@@ -2641,7 +2650,7 @@ To git@gitserver:/opt/git/gitosis-admin.git
 $ git push origin master
 Initialized empty Git repository in /opt/git/iphone_project.git/
 Counting objects: 3, done.
-Writing objects: 100% (3/3), 230 bytes, done.
+Writing objects: 100% (3/3), 230 bytes | 0 bytes/s, done.
 Total 3 (delta 0), reused 0 (delta 0)
 To git@gitserver:iphone_project.git
  * [new branch]      master -&gt; master
@@ -2659,8 +2668,8 @@ $ cp /tmp/id_rsa.jessica.pub keydir/jessica.pub
 <p>そして彼らを 'mobile' チームに追加し、<code>iphone_project</code> を読み書きできるようにします。</p>
 
 <pre><code>[group mobile]
-writable = iphone_project
 members = scott john josie jessica
+writable = iphone_project
 </code></pre>
 
 <p>この変更をコミットしてプッシュすると、この四人のユーザーがプロジェクトへの読み書きをできるようになります。</p>
@@ -2668,12 +2677,12 @@ members = scott john josie jessica
 <p>Gitosis にはシンプルなアクセス制御機能もあります。John には読み込み専用のアクセス権を設定したいという場合は、このようにします。</p>
 
 <pre><code>[group mobile]
-writable = iphone_project
 members = scott josie jessica
+writable = iphone_project
 
 [group mobile_ro]
-readonly = iphone_project
 members = john
+readonly = iphone_project
 </code></pre>
 
 <p>John はプロジェクトをクローンして変更内容を受け取れます。しかし、手元での変更をプッシュしようとすると Gitosis に拒否されます。このようにして好きなだけのグループを作成し、それぞれに個別のユーザーとプロジェクトを含めることができます。また、グループのメンバーとして別のグループを指定し (その場合は先頭に <code>@</code> をつけます)、メンバーを自動的に継承することもできます。</p>
@@ -2682,12 +2691,12 @@ members = john
 members = scott josie jessica
 
 [group mobile]
-writable  = iphone_project
 members   = @mobile_committers
+writable  = iphone_project
 
 [group mobile_2]
-writable  = another_iphone_project
 members   = @mobile_committers john
+writable  = another_iphone_project
 </code></pre>
 
 <p>何か問題が発生した場合には、<code>[gitosis]</code> セクションの下に <code>loglevel=DEBUG</code> を書いておくと便利です。設定ミスでプッシュ権限を奪われてしまった場合は、サーバー上の <code>/home/git/.gitosis.conf</code> を直接編集して元に戻します。Gitosis は、このファイルから情報を読み取っています。<code>gitosis.conf</code> ファイルへの変更がプッシュされてきたときに、その内容をこのファイルに書き出します。このファイルを手動で変更しても、次に <code>gitosis-admin</code> プロジェクトへのプッシュが成功した時点でその内容が書き換えられることになります。</p>
@@ -3230,7 +3239,7 @@ Merge made by recursive.
 
 <p>マージがうまくいきました。John のコミット履歴は図 5-5 のようになります。</p>
 
-<p><img src="figures/5.5.png" title="5.5 origin/master をマージした後の John のリポジトリ" alt="5.5 origin/master をマージした後の John のリポジトリ" /></p>
+<p><img src="figures/5.5.png" title="5.5 `origin/master` をマージした後の John のリポジトリ" alt="5.5 `origin/master` をマージした後の John のリポジトリ" /></p>
 
 <p>自分のコードが正しく動作することを確認した John は、変更内容をサーバーにプッシュします。</p>
 
@@ -3271,7 +3280,7 @@ Date:   Fri May 29 16:01:27 2009 -0700
     removed invalid default value
 </code></pre>
 
-<p>Jessica はトピックブランチの内容を自分の master ブランチにマージし、同じく John の作業 (<code>origin/master</code>) も自分の <code>master</code> ブランチにマージして再び変更をサーバーにプッシュすることになります。まずは master ブランチに戻り、これまでの作業を統合できるようにします。</p>
+<p>Jessica はトピックブランチの内容を自分の <code>master</code> ブランチにマージし、同じく John の作業 (<code>origin/master</code>) も自分の <code>master</code> ブランチにマージして再び変更をサーバーにプッシュすることになります。まずは <code>master</code> ブランチに戻り、これまでの作業を統合できるようにします。</p>
 
 <pre><code>$ git checkout master
 Switched to branch "master"
@@ -3313,7 +3322,7 @@ To jessica@githost:simplegit.git
 
 <p><img src="figures/5.10.png" title="5.10 すべての変更をサーバーに書き戻した後の Jessica の履歴" alt="5.10 すべての変更をサーバーに書き戻した後の Jessica の履歴" /></p>
 
-<p>これがもっとも単純なワークフローです。トピックブランチでしばらく作業を進め、統合できる状態になれば自分の master ブランチにマージする。他の開発者の作業を取り込む場合は、<code>origin/master</code> を取得してもし変更があればマージする。そして最終的にそれをサーバーの <code>master</code> ブランチにプッシュする。全体的な流れは図 5-11 のようになります。</p>
+<p>これがもっとも単純なワークフローです。トピックブランチでしばらく作業を進め、統合できる状態になれば自分の <code>master</code> ブランチにマージする。他の開発者の作業を取り込む場合は、<code>origin/master</code> を取得してもし変更があればマージする。そして最終的にそれをサーバーの <code>master</code> ブランチにプッシュする。全体的な流れは図 5-11 のようになります。</p>
 
 <p><img src="figures/5.11.png" title="5.11 複数開発者での Git を使ったシンプルな開発作業のイベントシーケンス" alt="5.11 複数開発者での Git を使ったシンプルな開発作業のイベントシーケンス" /></p>
 
@@ -3603,7 +3612,28 @@ index 76f47bc..f9815f1 100644
   sslverify = false
 </code></pre>
 
-<p>IMAP サーバーで SSL を使っていない場合は、最後の二行はおそらく不要でしょう。そして host のところが <code>imaps://</code> ではなく <code>imap://</code> となります。ここまでの設定が終われば、<code>git send-email</code> を実行して IMAP サーバーの Drafts フォルダにパッチを置くことができるようになります。</p>
+<p>IMAP サーバーで SSL を使っていない場合は、最後の二行はおそらく不要でしょう。そして host のところが <code>imaps://</code> ではなく <code>imap://</code> となります。ここまでの設定が終われば、<code>git imap-send</code> を実行して IMAP サーバーの Drafts フォルダにパッチを置くことができるようになります。</p>
+
+<pre><code>$ cat *.patch |git imap-send
+Resolving imap.gmail.com... ok
+Connecting to [74.125.142.109]:993... ok
+Logging in...
+sending 2 messages
+100% (2/2) done
+</code></pre>
+
+<p>あとは、Drafts フォルダに移動して To フィールドをメーリングリストのアドレスに変更し (おそらく CC には担当メンテなのアドレスを入れ)、送信できるようになりました。</p>
+
+<p>SMTP サーバーを使ってパッチを送ることもできます。IMAP サーバー同様、設定は <code>git config</code> コマンドで順に設定してもいいですし、<code>~/.gitconfig</code> ファイルの sendmail セクションに直接入力してもかまいません。</p>
+
+<pre><code>[sendemail]
+  smtpencryption = tls
+  smtpserver = smtp.gmail.com
+  smtpuser = user@gmail.com
+  smtpserverport = 587
+</code></pre>
+
+<p>設定が追加できたら、<code>git send-email</code> を実行してパッチを送信します。</p>
 
 <pre><code>$ git send-email *.patch
 0001-added-limit-to-log-function.patch
@@ -3631,8 +3661,6 @@ References: &lt;y&gt;
 
 Result: OK
 </code></pre>
-
-<p>あとは、Drafts フォルダに移動して To フィールドをメーリングリストのアドレスに変更し (おそらく CC には担当メンテなのアドレスを入れ)、送信できるようになりました。</p>
 
 <h3>まとめ</h3>
 
