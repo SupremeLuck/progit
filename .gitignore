@@ -14,3 +14,4 @@ epub/temp
 .#*
 figures/*
 */*.session
+*.bak
