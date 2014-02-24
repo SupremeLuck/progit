@@ -102,7 +102,7 @@ Let’s go through a simple example of branching and merging with a workflow tha
 
 At this stage, you’ll receive a call that another issue is critical and you need a hotfix. You’ll do the following:
 
-1. Revert back to your production branch.
+1. Switch back to your production branch.
 2. Create a branch to add the hotfix.
 3. After it’s tested, merge the hotfix branch, and push to production.
 4. Switch back to your original story and continue working.
@@ -276,7 +276,7 @@ If you want to use a graphical tool to resolve these issues, you can run `git me
 	  {remote}: modified file
 	Hit return to start merge resolution tool (opendiff):
 
-If you want to use a merge tool other than the default (Git chose `opendiff` for me in this case because I ran the command on a Mac), you can see all the supported tools listed at the top after “merge tool candidates”. Type the name of the tool you’d rather use. In Chapter 7, we’ll discuss how you can change this default value for your environment.
+If you want to use a merge tool other than the default (Git chose `opendiff` for me in this case because I ran the command on a Mac), you can see all the supported tools listed at the top after “... one of the following tools:”. Type the name of the tool you’d rather use. In Chapter 7, we’ll discuss how you can change this default value for your environment.
 
 After you exit the merge tool, Git asks you if the merge was successful. If you tell the script that it was, it stages the file to mark it as resolved for you.
 
