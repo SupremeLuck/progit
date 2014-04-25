@@ -179,12 +179,12 @@ Lass uns das Ganze an einem Beispiel durchgehen, dessen Workflow zum Thema Branc
 
 In diesem Augenblick kommt ein Anruf, dass ein kritisches Problem aufgetreten ist und sofort gelöst werden muss. Du machst folgendes:
 
-<!--1. Revert back to your production branch.-->
+<!--1. Switch back to your production branch.-->
 <!--2. Create a branch to add the hotfix.-->
 <!--3. After it’s tested, merge the hotfix branch, and push to production.-->
 <!--4. Switch back to your original story and continue working.-->
 
-1. Geh zurück zu Deinem „Produktiv“-Zweig.
+1. Schalte zurück zu Deinem „Produktiv“-Zweig.
 2. Erstelle eine Branch für den Hotfix.
 3. Nach dem Testen führst Du den Hotfix-Branch mit dem „Produktiv“-Branch zusammen.
 4. Schalte wieder auf Deine alte Arbeit zurück und werkel weiter.
@@ -381,12 +381,12 @@ Git hat hier keinen 'merge commit' erstellt. Es hat den Prozess gestoppt, damit 
 	On branch master
 	You have unmerged paths.
 	  (fix conflicts and run "git commit")
-	
+
 	Unmerged paths:
 	  (use "git add <file>..." to mark resolution)
-	
+
 	        both modified:      index.html
-	
+
 	no changes added to commit (use "git add" and/or "git commit -a")
 
 <!--Anything that has merge conflicts and hasn’t been resolved is listed as unmerged. Git adds standard conflict-resolution markers to the files that have conflicts, so you can open them manually and resolve those conflicts. Your file contains a section that looks something like this:-->
@@ -429,9 +429,9 @@ Wenn Du ein grafischen Tool zur Bereinigung benutzen willst, dann verwende `git 
 	  {remote}: modified file
 	Hit return to start merge resolution tool (opendiff):
 
-<!--If you want to use a merge tool other than the default (Git chose `opendiff` for me in this case because I ran the command on a Mac), you can see all the supported tools listed at the top after “merge tool candidates”. Type the name of the tool you’d rather use. In Chapter 7, we’ll discuss how you can change this default value for your environment.-->
+<!--If you want to use a merge tool other than the default (Git chose `opendiff` for me in this case because I ran the command on a Mac), you can see all the supported tools listed at the top after “... one of the following tools:”. Type the name of the tool you’d rather use. In Chapter 7, we’ll discuss how you can change this default value for your environment.-->
 
-Wenn Du ein anderes Tool anstelle des Standardwerkzeug für ein 'merge' verwenden möchtest (Git verwendet in meinem Fall `opendiff`, da ich auf einem Mac arbeite), dann kannst Du alle unterstützten Werkzeuge oben – neben „merge tool candidates“ – aufgelistet sehen. Tippe einfach den Namen Deines gewünschten Werkzeugs ein. In Kapitel 7 besprechen wir, wie Du diesen Standardwert in Deiner Umgebung dauerhaft ändern kannst.
+Wenn Du ein anderes Tool anstelle des Standardwerkzeug für ein 'merge' verwenden möchtest (Git verwendet in meinem Fall `opendiff`, da ich auf einem Mac arbeite), dann kannst Du alle unterstützten Werkzeuge oben – unter „one of the following tools“ – aufgelistet sehen. Tippe einfach den Namen Deines gewünschten Werkzeugs ein. In Kapitel 7 besprechen wir, wie Du diesen Standardwert in Deiner Umgebung dauerhaft ändern kannst.
 
 <!--After you exit the merge tool, Git asks you if the merge was successful. If you tell the script that it was, it stages the file to mark it as resolved for you.-->
 
@@ -445,9 +445,9 @@ Du kannst `git status` erneut ausführen, um zu sehen, ob alle Konflikte gelöst
 	On branch master
 	Changes to be committed:
 	  (use "git reset HEAD <file>..." to unstage)
-	
+
 	        modified:   index.html
-	
+
 
 <!--If you’re happy with that, and you verify that everything that had conflicts has been staged, you can type `git commit` to finalize the merge commit. The commit message by default looks something like this:-->
 
@@ -536,7 +536,7 @@ Jetzt da Du die Grundlagen von 'branching' und 'merging' kennst, fragst Du Dich 
 
 <!--Because Git uses a simple three-way merge, merging from one branch into another multiple times over a long period is generally easy to do. This means you can have several branches that are always open and that you use for different stages of your development cycle; you can merge regularly from some of them into others.-->
 
-Da Git das einfachen 3-Wege-'merge' verwendet, ist häufiges Zusammenführen von einer Branch in eine andere über einen langen Zeitraum generell einfach zu bewerkstelligen. Das heisst, Du kann mehrere Branches haben, die alle offen sind und auf unterschiedlichen Ebenen Deines Entwicklungszyklus verwendung finden, und diese regelmäßig ineinander zusammenführen.
+Da Git das einfachen 3-Wege-'merge' verwendet, ist häufiges Zusammenführen von einer Branch in eine andere über einen langen Zeitraum generell einfach zu bewerkstelligen. Das heisst, Du kannst mehrere Branches haben, die alle offen sind und auf unterschiedlichen Ebenen Deines Entwicklungszyklus verwendung finden, und diese regelmäßig ineinander zusammenführen.
 
 <!--Many Git developers have a workflow that embraces this approach, such as having only code that is entirely stable in their `master` branch — possibly only code that has been or will be released. They have another parallel branch named develop or next that they work from or use to test stability — it isn’t necessarily always stable, but whenever it gets to a stable state, it can be merged into `master`. It’s used to pull in topic branches (short-lived branches, like your earlier `iss53` branch) when they’re ready, to make sure they pass all the tests and don’t introduce bugs.-->
 

@@ -1,7 +1,8 @@
 language: ruby
 rvm:
   - 1.9.3
-before_install:
- - sudo apt-get install git pandoc texlive-xetex texlive-latex-extra calibre ruby-rdiscount fonts-ipaexfont ttf-vlgothic
-script: 
- - rake ebook:generate
+script: rake ci:parallel_check
+notifications:
+  email:
+    recipients:
+      - jn.avila@free.fr

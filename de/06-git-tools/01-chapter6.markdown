@@ -86,9 +86,9 @@ Eine Menge Leute machen sich Sorgen, dass ab einem zufälligen Punkt zwei Objekt
 
 Wenn es passiert, dass bei einem Commit, ein Objekt mit dem gleichen SHA-1-Hashwert im Repository vorhanden ist, wird Git sehen, dass das vorherige Objekt bereits in der Datenbank vorhanden ist und davon ausgehen, dass es bereits geschrieben wurde. Wenn Du versuchst, das Objekt später wieder auszuchecken, wirst Du immer die Daten des ersten Objekts bekommen.
 
-<!--However, you should be aware of how ridiculously unlikely this scenario is. The SHA-1 digest is 20 bytes or 160 bits. The number of randomly hashed objects needed to ensure a 50% probability of a single collision is about 2^80 (the formula for determining collision probability is `p = (n(n-1)/2) * (1/2^160))`. 2^80 is 1.2 x 10^24 or 1 million billion billion. That’s 1,200 times the number of grains of sand on the earth.-->
+<!--However, you should be aware of how ridiculously unlikely this scenario is. The SHA-1 digest is 20 bytes or 160 bits. The number of randomly hashed objects needed to ensure a 50% probability of a single collision is about 2^80 (the formula for determining collision probability is `p = (n(n-1)/2) * (1/2^160)`). 2^80 is 1.2 x 10^24 or 1 million billion billion. That’s 1,200 times the number of grains of sand on the earth.-->
 
-Allerdings solltest Du Dir bewusst machen, wie unglaublich unwahrscheinlich dieses Szenario ist. Die Länge des SHA-1-Hashs beträgt 20 Bytes oder 160 Bits. Die Anzahl der Objekte, die benötigt werden, um eine 50% Chance einer Kollision zu haben, beträgt ungefähr 2^80 (die Formel zum Berechnen der Kollisionswahrscheinlichkeit lautet `p = (n(n-1)/2) * (1/2^160))`. 2^80 ist somit 1.2 x 10^24 oder eine Trilliarde. Das ist 1200 Mal so viel, wie es Sandkörner auf der Erde gibt.
+Allerdings solltest Du Dir bewusst machen, wie unglaublich unwahrscheinlich dieses Szenario ist. Die Länge des SHA-1-Hashs beträgt 20 Bytes oder 160 Bits. Die Anzahl der Objekte, die benötigt werden, um eine 50% Chance einer Kollision zu haben, beträgt ungefähr 2^80 (die Formel zum Berechnen der Kollisionswahrscheinlichkeit lautet `p = (n(n-1)/2) * (1/2^160)`). 2^80 ist somit 1.2 x 10^24 oder eine Trilliarde. Das ist 1200 Mal so viel, wie es Sandkörner auf der Erde gibt.
 
 <!--Here’s an example to give you an idea of what it would take to get a SHA-1 collision. If all 6.5 billion humans on Earth were programming, and every second, each one was producing code that was the equivalent of the entire Linux kernel history (1 million Git objects) and pushing it into one enormous Git repository, it would take 5 years until that repository contained enough objects to have a 50% probability of a single SHA-1 object collision. A higher probability exists that every member of your programming team will be attacked and killed by wolves in unrelated incidents on the same night.-->
 
@@ -655,7 +655,7 @@ An dieser Stelle noch einmal der Hinweis, dass Git den zuletzt erstellten Stash 
 
     $ git stash show -p | git apply -R
 
-<!--You may want to create an alias and effectively add a `stash-unapply` command to your git. For example:-->
+<!--You may want to create an alias and effectively add a `stash-unapply` command to your Git. For example:-->
 
 Wenn Du dieses Feature öfters benötigst, ist es wahrscheinlich sinnvoll, einen Alias `stash-unapply` in Git dafür anzulegen:
 
@@ -1170,7 +1170,7 @@ Die zweite Auffälligkeit bei der Ausgabe von `git status` ist der Eintrag rack.
 
 <!--Although `rack` is a subdirectory in your working directory, Git sees it as a submodule and doesn’t track its contents when you’re not in that directory. Instead, Git records it as a particular commit from that repository. When you make changes and commit in that subdirectory, the superproject notices that the HEAD there has changed and records the exact commit you’re currently working off of; that way, when others clone this project, they can re-create the environment exactly.-->
 
-Obwohl `rack` ein Unterverzeichnis in Deinem Arbeitsverzeichnis ist, erkennt Git dieses Verzeichnis als Submodul und verfolgt die Änderungen innerhalb dieses Verzeichnisses nicht, wenn Git nicht innerhalb dieses Verzeichnisses aufgerufen wird. Stattdessen erfässt Git, welcher Commit in diesem Repository ausgecheckt ist. Wenn Du also Änderungen in diesem Unterverzeichnis durchführst und eincheckst, kann das Superprojekt erkennen, dass sich der aktuelle HEAD von diesem Projekt geändert hat. Das Superprojekt kann sich jetzt diesen Commit merken. Auf diese Art und Weise ist es möglich, den kompletten Zustand des Projekts mit allen Projekten, die als Submodul hinzugefügt wurden, zu reproduzieren. In der Git-Terminologie wird das Projekt, welches eines oder mehrere Submodule enthält, als Superprojekt bezeichnet.
+Obwohl `rack` ein Unterverzeichnis in Deinem Arbeitsverzeichnis ist, erkennt Git dieses Verzeichnis als Submodul und verfolgt die Änderungen innerhalb dieses Verzeichnisses nicht, wenn Git nicht innerhalb dieses Verzeichnisses aufgerufen wird. Stattdessen erfasst Git, welcher Commit in diesem Repository ausgecheckt ist. Wenn Du also Änderungen in diesem Unterverzeichnis durchführst und eincheckst, kann das Superprojekt erkennen, dass sich der aktuelle HEAD von diesem Projekt geändert hat. Das Superprojekt kann sich jetzt diesen Commit merken. Auf diese Art und Weise ist es möglich, den kompletten Zustand des Projekts mit allen Projekten, die als Submodul hinzugefügt wurden, zu reproduzieren. In der Git-Terminologie wird das Projekt, welches eines oder mehrere Submodule enthält, als Superprojekt bezeichnet.
 
 <!--This is an important point with submodules: you record them as the exact commit they’re at. You can’t record a submodule at `master` or some other symbolic reference.-->
 
