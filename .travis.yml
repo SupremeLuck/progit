@@ -3,4 +3,6 @@ rvm:
   - 1.9.3
 before_install:
  - sudo apt-get install git pandoc texlive-xetex texlive-latex-extra calibre ruby-rdiscount fonts-ipaexfont ttf-vlgothic
-script: rake pdf:generate
+script:
+ - rake pdf:generate
+ - rake epub:generate
