@@ -5,9 +5,9 @@ require 'rake/clean'
 namespace :ebook do
         desc "generate epub/mobi/azw/pdf"
         task :generate do
-                system("FORMAT=epub /bin/bash ruby makeebooks ja")
-                system("FORMAT=mobi /bin/bash ruby makeebooks ja")
-                system("FORMAT=azw /bin/bash ruby makeebooks ja")
+                system("FORMAT=epub ./makeebooks ja")
+                system("FORMAT=mobi ./makeebooks ja")
+                system("FORMAT=azw3 ./makeebooks ja")
                 system("bash makepdfs ja")
         end
 end
