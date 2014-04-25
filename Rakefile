@@ -2,18 +2,12 @@
 
 require 'rake/clean'
 
-namespace :epub do
-        desc "generate epub/mobi/azw"
+namespace :ebook do
+        desc "generate epub/mobi/azw/pdf"
         task :generate do
                 system("FORMAT=epub ruby makeebooks ja")
                 system("FORMAT=mobi ruby makeebooks ja")
                 system("FORMAT=azw ruby makeebooks ja")
-        end
-end
-
-namespace :pdf do
-        desc "generate pdf"
-        task :generate  do
                 system("bash makepdfs ja")
         end
 end
