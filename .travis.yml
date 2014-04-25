@@ -1,6 +1,6 @@
 language: ruby
 rvm:
   - 1.9.3
-script: rake ci:check
-notifications:
-  email: false
+before_install:
+ - sudo apt-get install git pandoc texlive-xetex texlive-latex-extra calibre ruby-rdiscount fonts-ipaexfont ttf-vlgothic
+script: rake pdf:generate
