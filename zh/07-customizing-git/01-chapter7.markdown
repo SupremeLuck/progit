@@ -510,7 +510,7 @@ Git属性在导出项目归档时也能发挥作用。
 
 	test/ export-ignore
 
-现在，当运行git archive来创建项目的压缩包时，那个目录不会在归档中出现。
+现在，当运行 `git archive` 来创建项目的压缩包时，那个目录不会在归档中出现。
 
 #### export-subst ####
 
@@ -612,14 +612,12 @@ update 脚本和 `pre-receive` 脚本十分类似。不同之处在于它会为�
 
 	#!/usr/bin/env ruby
 
-	$refname = ARGV[0]
-	$oldrev  = ARGV[1]
-	$newrev  = ARGV[2]
-	$user    = ENV['USER']
+	refname = ARGV[0]
+	oldrev  = ARGV[1]
+	newrev  = ARGV[2]
+	user    = ENV['USER']
 
-	puts "Enforcing Policies... \n(#{$refname}) (#{$oldrev[0,6]}) (#{$newrev[0,6]})"
-
-没错，我在用全局变量。别鄙视我——这样比较利于演示过程。
+	puts "Enforcing Policies... \n(#{refname}) (#{oldrev[0,6]}) (#{newrev[0,6]})"
 
 #### 指定特殊的提交信息格式 ####
 

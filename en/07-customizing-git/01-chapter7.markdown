@@ -130,7 +130,7 @@ In addition, each of these has subsettings you can use to set specific colors fo
 
 	$ git config --global color.diff.meta "blue black bold"
 
-You can set the color to any of the following values: normal, black, red, green, yellow, blue, magenta, cyan, or white. If you want an attribute like bold in the previous example, you can choose from bold, dim, ul, blink, and reverse.
+You can set the color to any of the following values: `normal`, `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, or `white`, or, if your terminal supports more than 16 colors, an arbitrary numeric color value (between 0 and 255 on a 256-color terminal). If you want an attribute like bold in the previous example, you can choose from `bold`, `dim`, `ul`, `blink`, and `reverse`.
 
 See the `git config` manpage for all the subsettings you can configure, if you want to do that.
 
@@ -511,7 +511,7 @@ For example, say you have some test files in a `test/` subdirectory, and it does
 
 	test/ export-ignore
 
-Now, when you run git archive to create a tarball of your project, that directory won’t be included in the archive.
+Now, when you run `git archive` to create a tarball of your project, that directory won’t be included in the archive.
 
 #### export-subst ####
 
@@ -613,14 +613,12 @@ All the server-side work will go into the update file in your hooks directory. T
 
 	#!/usr/bin/env ruby
 
-	$refname = ARGV[0]
-	$oldrev  = ARGV[1]
-	$newrev  = ARGV[2]
-	$user    = ENV['USER']
+	refname = ARGV[0]
+	oldrev  = ARGV[1]
+	newrev  = ARGV[2]
+	user    = ENV['USER']
 
-	puts "Enforcing Policies... \n(#{$refname}) (#{$oldrev[0,6]}) (#{$newrev[0,6]})"
-
-Yes, I’m using global variables. Don’t judge me — it’s easier to demonstrate in this manner.
+	puts "Enforcing Policies... \n(#{refname}) (#{oldrev[0,6]}) (#{newrev[0,6]})"
 
 #### Enforcing a Specific Commit-Message Format ####
 
