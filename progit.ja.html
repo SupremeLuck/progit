@@ -199,7 +199,7 @@ $ sudo make prefix=/usr/local install
 
 <p>今や、Gitがシステムにあります。Git環境をカスタマイズするためにしたい事が少しはあることでしょう。アップグレードの度についてまわるので、たった一度でそれらを終わらすべきでしょう。またそれらは、またコマンドを実行することによっていつでも変更することができます。</p>
 
-<p>Gitには、git configと呼ばれるツールが付属します。これで、どのようにGitが見えて機能するかの全ての面を制御できる設定変数を取得し、設定することができます。これらの変数は三つの異なる場所に格納されうります：</p>
+<p>Gitには、<code>git config</code>と呼ばれるツールが付属します。これで、どのようにGitが見えて機能するかの全ての面を制御できる設定変数を取得し、設定することができます。これらの変数は三つの異なる場所に格納されうります：</p>
 
 <ul>
 <li><code>/etc/gitconfig</code> file: システム上の全てのユーザーと全てのリポジトリに対する設定値を保持します。もし<code>--system</code>オプションを<code>git config</code>に指定すると、明確にこのファイルに読み書きを行ないます。</li>
@@ -620,7 +620,7 @@ index 3cb747f..e445e28 100644
 <p>あるいは、コミットメッセージをインラインで記述することもできます。その場合は、<code>commit</code> コマンドの後で <code>-m</code> フラグに続けて次のように記述します。</p>
 
 <pre><code>$ git commit -m "Story 182: Fix benchmarks for speed"
-[master 463dc4f] Fix benchmarks for speed
+[master 463dc4f] Story 182: Fix benchmarks for speed
  2 files changed, 3 insertions(+)
  create mode 100644 README
 </code></pre>
@@ -969,16 +969,63 @@ The lines must be formatted as follows
 
 <pre><code>オプション 説明
 -(n)    直近の n 件のコミットのみを表示する
---since, --after    指定した日付以降のコミットのみに制限する
---until, --before   指定した日付以前のコミットのみに制限する
+--since, --after    指定した日付/時刻以降のCommitDateのコミットのみに制限する
+--until, --before    指定した日付/時刻以前のCommitDateのコミットのみに制限する
 --author    エントリが指定した文字列にマッチするコミットのみを表示する
 --committer エントリが指定した文字列にマッチするコミットのみを表示する
 </code></pre>
 
-<p>たとえば、Git ソースツリーのテストファイルに対する変更があったコミットのうち、Junio Hamano がコミットしたもの (マージは除く) で 2008 年 10 月に行われたものを知りたければ次のように指定します。</p>
+<h3>日時にもとづくログ出力の制限</h3>
 
-<pre><code>$ git log --pretty="%h - %s" --author=gitster --since="2008-10-01" \
-   --before="2008-11-01" --no-merges -- t/
+<p>Git のリポジトリ(git://git.kernel.org/pub/scm/git/git.git)からCommitDateを使ってコミットを検索してみましょう。パソコンに設定されたタイムゾーンにおける2014/04/29のコミットを検索するには、以下のコマンドを実行します。</p>
+
+<pre><code>$ git log --after="2014-04-29 00:00:00" --before="2014-04-29 23:59:59" \
+  --pretty=fuller
+</code></pre>
+
+<p>この場合、コマンドの結果はパソコンのタイムゾーン設定ごとに異なってしまいます。それを避けるには、タイムゾーンを含むISO 8601フォーマットのような日時を <code>--after</code> や <code>--before</code> の引数に指定するといいでしょう。そうすれば、上述のケースのようにコマンド実行結果が異なる可能性がなくなります。</p>
+
+<p>特定日時(例として、中央ヨーロッパ時間で2013/04/29 17:07:22)を指定してコミットを検索するには、以下のコマンドを使います。</p>
+
+<pre><code>$ git log  --after="2013-04-29T17:07:22+0200"      \
+          --before="2013-04-29T17:07:22+0200" --pretty=fuller
+
+commit de7c201a10857e5d424dbd8db880a6f24ba250f9
+Author:     Ramkumar Ramachandra &lt;artagnon@gmail.com&gt;
+AuthorDate: Mon Apr 29 18:19:37 2013 +0530
+Commit:     Junio C Hamano &lt;gitster@pobox.com&gt;
+CommitDate: Mon Apr 29 08:07:22 2013 -0700
+
+    git-completion.bash: lexical sorting for diff.statGraphWidth
+
+    df44483a (diff --stat: add config option to limit graph width,
+    2012-03-01) added the option diff.startGraphWidth to the list of
+    configuration variables in git-completion.bash, but failed to notice
+    that the list is sorted alphabetically.  Move it to its rightful place
+    in the list.
+
+    Signed-off-by: Ramkumar Ramachandra &lt;artagnon@gmail.com&gt;
+    Signed-off-by: Junio C Hamano &lt;gitster@pobox.com&gt;
+</code></pre>
+
+<p>これらの日時(<code>AuthorDate</code> と <code>CommitDate</code>)はGitのデフォルトフォーマット(<code>--date=default</code> オプション相当)です。作者とコミッター、それぞれのタイムゾーン情報を表示します。</p>
+
+<p>日時フォーマットの指定は他にも <code>--date=iso</code> (ISO 8601)、<code>--date=rfc</code> (RFC 2822)、<code>--date=raw</code> (Unix時間)、<code>--date=local</code> (端末のタイムゾーン)、<code>--date=relative</code>("2 hours ago"のように相対的な指定)などがあります。</p>
+
+<p>また、 <code>git log</code> 実行時に日時指定を省略すると、パソコンの時計をもとにコマンド実行日時を指定日時として使用します(協定標準時からの時差も同一になります)。</p>
+
+<p>具体的には、仮にパソコンの時計が09:00を指していて、かつタイムゾーン設定が協定標準時プラス3時間の場合、以下の <code>git log</code> コマンドの日時指定は同一として扱われます。</p>
+
+<pre><code>$ git log --after=2008-06-01 --before=2008-07-01
+$ git log --after="2008-06-01T09:00:00+0300" \
+    --before="2008-07-01T09:00:00+0300"
+</code></pre>
+
+<p>もう一つ例を挙げておきましょう。Git ソースツリーのテストファイルに対する変更があったコミットのうち、Junio Hamano がコミットしたもの (マージは除く) で 2008 年 10 月(ニューヨークのタイムゾーン)に行われたものを知りたければ次のように指定します。</p>
+
+<pre><code>$ git log --pretty="%h - %s" --author=gitster \
+   --after="2008-10-01T00:00:00-0400"         \
+  --before="2008-10-31T23:59:59-0400" --no-merges -- t/
 5610e3b - Fix testcase failure when extended attribute
 acd3b9e - Enhance hold_lock_file_for_{update,append}()
 f563754 - demonstrate breakage of detached checkout wi
@@ -987,7 +1034,7 @@ d1a43f2 - reset --hard/read-tree --reset -u: remove un
 b0ad11e - pull: allow "git pull origin $something:$cur
 </code></pre>
 
-<p>約 20,000 件におよぶ Git ソースコードのコミットの歴史の中で、このコマンドの条件にマッチするのは 6 件となります。</p>
+<p>約 36,000 件におよぶ Git ソースコードのコミットの歴史の中で、このコマンドの条件にマッチするのは 6 件となります。</p>
 
 <h3>GUI による歴史の可視化</h3>
 
@@ -1573,7 +1620,7 @@ $ git commit -m 'initial commit of my project'
 
 <p><img src="figures/3.4.png" title="3.4 複数のブランチがコミットデータの履歴を指す例" alt="3.4 複数のブランチがコミットデータの履歴を指す例" /></p>
 
-<p>Git は、あなたが今どのブランチで作業しているのかをどうやって知るのでしょうか? それを保持する特別なポインタが HEAD と呼ばれるものです。これは、Subversion や CVS といった他の VCS における HEAD の概念とはかなり違うものであることに注意しましょう。Git では、HEAD はあなたが作業しているローカルブランチへのポインタとなります。今回の場合は、あなたはまだ master ブランチにいます。git branch コマンドは新たにブランチを作成するだけであり、そのブランチに切り替えるわけではありません (図 3-5 を参照ください)。</p>
+<p>Git は、あなたが今どのブランチで作業しているのかをどうやって知るのでしょうか? それを保持する特別なポインタが HEAD と呼ばれるものです。これは、Subversion や CVS といった他の VCS における HEAD の概念とはかなり違うものであることに注意しましょう。Git では、HEAD はあなたが作業しているローカルブランチへのポインタとなります。今回の場合は、あなたはまだ master ブランチにいます。<code>git branch</code> コマンドは新たにブランチを作成するだけであり、そのブランチに切り替えるわけではありません (図 3-5 を参照ください)。</p>
 
 <p><img src="figures/3.5.png" title="3.5 現在作業中のブランチを指す HEAD" alt="3.5 現在作業中のブランチを指す HEAD" /></p>
 
@@ -1945,7 +1992,7 @@ If you are sure you want to delete it, run 'git branch -D testing'.
 
 <p>手元での作業を同期させるには、<code>git fetch origin</code> コマンドを実行します。このコマンドは、まず origin が指すサーバー (今回の場合は <code>git.ourcompany.com</code>) を探し、まだ手元にないデータをすべて取得し、ローカルデータベースを更新し、<code>origin/master</code> が指す先を最新の位置に変更します (図 3-24 を参照ください)。</p>
 
-<p><img src="figures/3.24.png" title="3.24 git fetch コマンドによるリモートへの参照の更新" alt="3.24 git fetch コマンドによるリモートへの参照の更新" /></p>
+<p><img src="figures/3.24.png" title="3.24 `git fetch` コマンドによるリモートへの参照の更新" alt="3.24 `git fetch` コマンドによるリモートへの参照の更新" /></p>
 
 <p>複数のリモートサーバーがあった場合にリモートのブランチがどのようになるのかを知るために、もうひとつ Git サーバーがあるものと仮定しましょう。こちらのサーバーは、チームの一部のメンバーが開発目的にのみ使用しています。このサーバーは <code>git.team1.ourcompany.com</code> にあるものとしましょう。このサーバーをあなたの作業中のプロジェクトから参照できるようにするには、第 2 章で紹介した <code>git remote add</code> コマンドを使用します。このリモートに <code>teamone</code> という名前をつけ、URL ではなく短い名前で参照できるようにします (図 3-25 を参照ください)。</p>
 
@@ -2270,7 +2317,7 @@ Cloning into bare repository 'my_project.git'...
 done.
 </code></pre>
 
-<p>このコマンドを実行したときの出力はちょっとわかりにくいかもしれません。<code>clone</code> は基本的に <code>git init</code> をしてから <code>git fetch</code> をするのと同じことなので、<code>git init</code> の部分の出力も見ることになります。そのメッセージは「空のディレクトリを作成しました」というものです。実際にどんなオブジェクトの転送が行われたのかは何も表示されませんが、きちんと転送は行われています。これで、<code>my_project.git</code> ディレクトリに Git リポジトリのデータができあがりました。</p>
+<p>そうすると、Git ディレクトリのデータを <code>my_project.git</code> ディレクトリにコピーできます。</p>
 
 <p>これは、おおざっぱに言うと次の操作と同じようなことです。</p>
 
@@ -3699,7 +3746,7 @@ Result: OK
 
 <p>これは、作業ディレクトリ内のファイルを変更します。<code>patch -p1</code> コマンドでパッチをあてるのとほぼ同じなのですが、それ以上に「これでもか」というほどのこだわりを持ってパッチを適用するので fuzzy マッチになる可能性が少なくなります。また、<code>git diff</code> 形式ではファイルの追加・削除やファイル名の変更も扱うことができますが、<code>patch</code> コマンドにはそれはできません。そして最後に、<code>git apply</code> は「全部適用するか、あるいは一切適用しないか」というモデルを採用しています。一方 <code>patch</code> コマンドの場合は、途中までパッチがあたった中途半端な状態になって困ることがあります。<code>git apply</code> のほうが、 <code>patch</code> よりもこだわりを持った処理を行うのです。<code>git apply</code> コマンドはコミットを作成するわけではありません。実行した後で、その変更をステージしてコミットする必要があります。</p>
 
-<p>git apply を使って、そのパッチをきちんと適用できるかどうかを事前に確かめることができます。パッチをチェックするには <code>git apply --check</code> を実行します。</p>
+<p><code>git apply</code> を使って、そのパッチをきちんと適用できるかどうかを事前に確かめることができます。パッチをチェックするには <code>git apply --check</code> を実行します。</p>
 
 <pre><code>$ git apply --check 0001-seeing-if-this-helps-the-gem.patch
 error: patch failed: ticgit.gemspec:1
@@ -3722,7 +3769,7 @@ Subject: [PATCH 1/2] add limit to log function
 Limit log functionality to the first 20
 </code></pre>
 
-<p>先ほどのセクションでごらんいただいたように、format-patch コマンドの出力結果もこれと同じ形式で始まっていますね。これは、mbox 形式のメールフォーマットとしても正しいものです。git send-email を正しく使ったパッチが送られてきた場合、受け取ったメールを mbox 形式で保存して git am コマンドでそのファイルを指定すると、すべてのパッチの適用が始まります。複数のメールをまとめてひとつの mbox に保存できるメールソフトを使っていれば、送られてきたパッチをひとつのファイルにまとめて git am で一度に適用することもできます。</p>
+<p>先ほどのセクションでごらんいただいたように、format-patch コマンドの出力結果もこれと同じ形式で始まっていますね。これは、mbox 形式のメールフォーマットとしても正しいものです。<code>git send-email</code> を正しく使ったパッチが送られてきた場合、受け取ったメールを mbox 形式で保存して <code>git am</code> コマンドでそのファイルを指定すると、すべてのパッチの適用が始まります。複数のメールをまとめてひとつの mbox に保存できるメールソフトを使っていれば、送られてきたパッチをひとつのファイルにまとめて <code>git am</code> で一度に適用することもできます。</p>
 
 <p>しかし、<code>format-patch</code> で作ったパッチがチケットシステム (あるいはそれに類する何か) にアップロードされたような場合は、まずそのファイルをローカルに保存して、それを <code>git am</code> に渡すことになります。</p>
 
@@ -4103,13 +4150,13 @@ ca82a6dff817ec66f44342007202690a93763949
 <p>参照ログを見るには <code>git reflog</code> を使います。</p>
 
 <pre><code>$ git reflog
-734713b... HEAD@{0}: commit: fixed refs handling, added gc auto, updated
-d921970... HEAD@{1}: merge phedders/rdocs: Merge made by recursive.
-1c002dd... HEAD@{2}: commit: added some blame and merge stuff
-1c36188... HEAD@{3}: rebase -i (squash): updating HEAD
-95df984... HEAD@{4}: commit: # This is a combination of two commits.
-1c36188... HEAD@{5}: rebase -i (squash): updating HEAD
-7e05da5... HEAD@{6}: rebase -i (pick): updating HEAD
+734713b HEAD@{0}: commit: fixed refs handling, added gc auto, updated
+d921970 HEAD@{1}: merge phedders/rdocs: Merge made by recursive.
+1c002dd HEAD@{2}: commit: added some blame and merge stuff
+1c36188 HEAD@{3}: rebase -i (squash): updating HEAD
+95df984 HEAD@{4}: commit: # This is a combination of two commits.
+1c36188 HEAD@{5}: rebase -i (squash): updating HEAD
+7e05da5 HEAD@{6}: rebase -i (pick): updating HEAD
 </code></pre>
 
 <p>何らかの理由でブランチの先端が更新されるたびに、Git はその情報をこの一時履歴に格納します。そして、このデータを使って過去のコミットを指定することもできます。リポジトリの HEAD の五つ前の状態を知りたい場合は、先ほど見た reflog の出力のように <code>@{n}</code> 形式で参照することができます。</p>
@@ -4484,15 +4531,15 @@ HEAD is now at 049d078 added the index file
 
 <pre><code>$ git status
 # On branch master
-nothing to commit (working directory clean)
+nothing to commit, working directory clean
 </code></pre>
 
 <p>これで、簡単にブランチを切り替えて別の作業をできるようになりました。これまでの変更内容はスタックに格納されています。今までに格納した内容を見るには <code>git stash list</code> を使います。</p>
 
 <pre><code>$ git stash list
 stash@{0}: WIP on master: 049d078 added the index file
-stash@{1}: WIP on master: c264051... Revert "added file_size"
-stash@{2}: WIP on master: 21d80a5... added number to log
+stash@{1}: WIP on master: c264051 Revert "added file_size"
+stash@{2}: WIP on master: 21d80a5 added number to log
 </code></pre>
 
 <p>この例では、以前にも二回ほど作業を隠していたようです。そこで、三種類の異なる作業にアクセスできるようになっています。先ほど隠した変更を再度適用するには、stash コマンドの出力に書かれていたように <code>git stash apply</code> コマンドを実行します。それよりもっと前に隠したものを適用したい場合は <code>git stash apply stash@{2}</code> のようにして名前を指定することもできます。名前を指定しなければ、Git は直近に隠された変更を再適用します。</p>
@@ -4529,8 +4576,8 @@ stash@{2}: WIP on master: 21d80a5... added number to log
 
 <pre><code>$ git stash list
 stash@{0}: WIP on master: 049d078 added the index file
-stash@{1}: WIP on master: c264051... Revert "added file_size"
-stash@{2}: WIP on master: 21d80a5... added number to log
+stash@{1}: WIP on master: c264051 Revert "added file_size"
+stash@{2}: WIP on master: 21d80a5 added number to log
 $ git stash drop stash@{0}
 Dropped stash@{0} (364e91f3f268f0900bc3ee613f9f733e82aaed43)
 </code></pre>
@@ -5804,7 +5851,7 @@ $ cat date_test.txt
 <pre><code>test/ export-ignore
 </code></pre>
 
-<p>これで、プロジェクトのtarballを作成するためにgitを実行した時、アーカイブには<code>test/</code>ディレクトリが含まれないようになります。</p>
+<p>これで、プロジェクトのtarballを作成するために<code>git archive</code>を実行した時、アーカイブには<code>test/</code>ディレクトリが含まれないようになります。</p>
 
 <h4>export-subst</h4>
 
@@ -5910,15 +5957,13 @@ Merge made by recursive.
 
 <pre><code>#!/usr/bin/env ruby
 
-$refname = ARGV[0]
-$oldrev  = ARGV[1]
-$newrev  = ARGV[2]
-$user    = ENV['USER']
+refname = ARGV[0]
+oldrev  = ARGV[1]
+newrev  = ARGV[2]
+user    = ENV['USER']
 
-puts "Enforcing Policies... \n(#{$refname}) (#{$oldrev[0,6]}) (#{$newrev[0,6]})"
+puts "Enforcing Policies... \n(#{refname}) (#{oldrev[0,6]}) (#{newrev[0,6]})"
 </code></pre>
-
-<p>ああ、グローバル変数を使ってるとかいうツッコミは勘弁してください。このほうが説明が楽なので。</p>
 
 <h4>特定のコミットメッセージ書式の強制</h4>
 
@@ -6482,7 +6527,7 @@ Fast-forwarded master to refs/remotes/trunk.
 
 <h3>Git でのブランチに関する問題</h3>
 
-<p>Git のワークフローに慣れてくると、トピックブランチを作ってそこで作業を行い、それをマージすることもあるでしょう。git svn を使って Subversion サーバーにプッシュする場合は、それらのブランチをまとめてプッシュするのではなく一つのブランチ上にリベースしてからプッシュしたくなるかもしれません。リベースしたほうがよい理由は、Subversion はリニアに歴史を管理していて Git のようなマージができないからです。git svn がスナップショットを Subversion のコミットに変換するときには、最初の親だけに続けます。</p>
+<p>Git のワークフローに慣れてくると、トピックブランチを作ってそこで作業を行い、それをマージすることもあるでしょう。<code>git svn</code> を使って Subversion サーバーにプッシュする場合は、それらのブランチをまとめてプッシュするのではなく一つのブランチ上にリベースしてからプッシュしたくなるかもしれません。リベースしたほうがよい理由は、Subversion はリニアに歴史を管理していて Git のようなマージができないからです。<code>git svn</code> がスナップショットを Subversion のコミットに変換するときには、最初の親だけに続けます。</p>
 
 <p>歴史が次のような状態になっているものとしましょう。<code>experiment</code> ブランチを作ってそこで 2 回のコミットを済ませ、それを <code>master</code> にマージしたところです。ここで <code>dcommit</code> すると、出力はこのようになります。</p>
 
@@ -6512,7 +6557,7 @@ Resetting to the latest refs/remotes/trunk
 
 <h3>Subversion のブランチ</h3>
 
-<p>Subversion のブランチは Git のブランチとは異なります。可能ならば、Subversion のブランチは使わないようにするのがベストでしょう。しかし、Subversion のブランチの作成やコミットも、git svn を使ってすることができます。</p>
+<p>Subversion のブランチは Git のブランチとは異なります。可能ならば、Subversion のブランチは使わないようにするのがベストでしょう。しかし、Subversion のブランチの作成やコミットも、<code>git svn</code> を使ってすることができます。</p>
 
 <h4>新しい SVN ブランチの作成</h4>
 
@@ -6806,7 +6851,7 @@ current
 
 <p>Git のディレクトリにインポートするにはまず、これらのデータをどのように Git に格納するかをレビューしなければなりません。Git は基本的にはコミットオブジェクトのリンクリストであり、コミットオブジェクトがコンテンツのスナップショットを指しています。<code>fast-import</code> に指示しなければならないのは、コンテンツのスナップショットが何でどのコミットデータがそれを指しているのかということと、コミットデータを取り込む順番だけです。ここでは、スナップショットをひとつずつたどって各ディレクトリの中身をさすコミットオブジェクトを作り、それらを日付順にリンクさせるものとします。</p>
 
-<p>第 7 章の「Git ポリシーの実施例」同様、ここでも Ruby を使って書きます。ふだんから使いなれており、きっと他の方にも読みやすいであろうからです。このサンプルをあなたの使いなれた言語で書き換えるのも簡単でしょう。単に適切な情報を標準出力に送るだけなのだから。また、Windows を使っている場合は、行末にキャリッジリターンを含めないように注意が必要です。git fast-import が想定している行末は LF だけであり、Windows で使われている CRLF は想定していません。</p>
+<p>第 7 章の「Git ポリシーの実施例」同様、ここでも Ruby を使って書きます。ふだんから使いなれており、きっと他の方にも読みやすいであろうからです。このサンプルをあなたの使いなれた言語で書き換えるのも簡単でしょう。単に適切な情報を標準出力に送るだけなのだから。また、Windows を使っている場合は、行末にキャリッジリターンを含めないように注意が必要です。<code>git fast-import</code> が想定している行末は LF だけであり、Windows で使われている CRLF は想定していません。</p>
 
 <p>まず最初に対象ディレクトリに移動し、コミットとしてインポートするスナップショットとしてサブディレクトリを識別します。基本的なメインループは、このようになります。</p>
 
@@ -6920,7 +6965,7 @@ end
 <pre><code>return mark
 </code></pre>
 
-<p>注意: Windows 上で動かす場合はさらにもう一手間必要です。先述したように、Windows の改行文字は CRLF ですが git fast-import は LF にしか対応していません。この問題に対応して git fast-import をうまく動作させるには、CRLF ではなく LF を使うよう ruby に指示しなければなりません。</p>
+<p>注意: Windows 上で動かす場合はさらにもう一手間必要です。先述したように、Windows の改行文字は CRLF ですが <code>git fast-import</code> は LF にしか対応していません。この問題に対応して <code>git fast-import</code> をうまく動作させるには、CRLF ではなく LF を使うよう ruby に指示しなければなりません。</p>
 
 <pre><code>$stdout.binmode
 </code></pre>
